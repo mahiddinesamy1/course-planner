@@ -1,0 +1,25 @@
+name: Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+env:
+  TZ: America/Montreal
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-12]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: npm install
+      - name: Run tests
+        run: npm test
