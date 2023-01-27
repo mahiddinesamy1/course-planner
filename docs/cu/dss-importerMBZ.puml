@@ -1,0 +1,12 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour <b>CU04 - Importer une sauvegrde MBZ d'un cours moodle</b>\nScénario principal
+actor ":Enseignant" as e
+participant ":Système" as s
+e->s : importerMBZ(cheminAccès)
+s-->>e : affiche les activitées définies dans le MBZ
+@enduml
