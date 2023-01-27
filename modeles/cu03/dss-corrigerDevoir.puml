@@ -1,0 +1,21 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour le scénario <i><b>Corriger devoir</b></i>
+actor ":Enseignant" as e
+participant ":Système" as s
+e->s : recupererListeEspaceCoursEnseignant()
+e<<--s : affiche la liste des devoirs remis par cours de l'enseignant
+e->s : recupererDevoirRemisParId(idDevoirRemis: number, idEspaceCours: number)
+e<<--s : retourne le devoir remis correspondant
+
+loop tant que l'enseignant a des devoirs à corriger
+e->s : recupererFichierDevoirRemis(idDevoirRemis: number, idEspaceCours: number)
+e<<--s : retourne le path du fichier du devoir remis
+e->s : corrigerDevoir(note: number, idDevoirRemis: number, idEspaceCours: number)
+e<<--s : retourne le fichier du devoir corrigé et ajuste la note du devoir remis
+end
+@enduml

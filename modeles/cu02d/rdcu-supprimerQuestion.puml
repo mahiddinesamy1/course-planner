@@ -1,0 +1,28 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour <b>supprimer question</b>
+participant ":ControleurQuestion" as cq
+participant ":BDD" as bdd
+participant "modeles: Map<String, Map<number, any>>" as modeles
+participant "tableQuestion:Map<number,any>" as tableSGA
+
+
+->cq : supprimerQuestion(idQuestion)
+note right : selon Contrôleur\n(ControleurQuestion est\nl'objet racine)
+
+' cq -> bdd : afficherValeursQuestionASupprimer()
+' note right : Selon Expert
+
+cq -> bdd : tableQuestion = getTable("Question")
+note right : selon Expert
+
+bdd -> modeles : tableQuestion = get("Question")
+note right : selon Expert
+
+alt tableQuestion.has(idQuestion)
+    cq -> tableSGA : delete(idQuestion)
+    note right : selon Expert
+end alt
+
+@enduml

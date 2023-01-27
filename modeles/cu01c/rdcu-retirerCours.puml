@@ -1,0 +1,21 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour retirer un cours SGA :\n<b>retirerCours</b>
+participant ":GestionnaireCours" as gestCours
+participant ":Universite" as uni
+participant "tableCoursSGA:Map<number,Cours>" as tableSGA
+
+->gestCours : listeCours = retirerCours(idCours)
+note right : selon Contrôleur\n(GestionnaireCours est\nun controleur de session)
+
+gestCours -> uni : tableCoursSGA = getCoursSGA()
+note right : selon Expert
+
+alt tableCoursSGA.has(idCours)
+    gestCours -> tableSGA : delete(idCours)
+end alt
+
+gestCours -> gestCours : listeCours = recupererListeCoursSGA()
+
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour obtenir tous les devoirs pour un cours
+participant ":GestionnaireDevoir" as gd
+participant "devoir:Devoir" as d
+
+-> gd : listeDevoirs = getListeDevoirsParIdCours(idEspaceCours)
+note right : selon Controleur (GestionnaireDevoir est \nun contrôleur de session)
+gd->d : rechercher("idEspaceCours", idEspaceCours)
+note right : selon Expert et Transformer ID
+
+
+@enduml

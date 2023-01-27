@@ -1,0 +1,15 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour obtenir les détails du cours SGA d'un enseignant
+
+participant ":ControleurCours" as ct
+participant ":Cours" as c
+
+->ct : cours = recupererCours(idCours)
+note right : selon Contrôleur\n(ControleurCours est\nl'objet racine)
+
+ct -> c : cours = rechercher("id", idCours)
+note right : Selon Expert et Transformer ID
+
+@enduml

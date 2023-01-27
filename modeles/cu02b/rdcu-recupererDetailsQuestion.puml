@@ -1,0 +1,24 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour récupérer une question
+participant ":ControleurQuestion" as c
+participant ":BDD" as bdd
+participant "modeles: Map<String, Map<number, any>>" as modeles
+participant "tableQuestion:Map<number, any>" as tableQs
+
+->c : question = recupererDetailsQuestion(idQuestion)
+note right : selon Contrôleur\n(ControleurQuestion est l'objet racine)
+
+c -> bdd : tableQuestion = getTable("Question")
+note right : selon Expert
+
+bdd -> modeles : tableQuestion = get("Question")
+note right : selon Expert
+
+alt tableQuestion.has(idQuestion)
+    c -> tableQs : question = get(idQuestion)
+    note right : selon Expert et\nTransformer ID en objets
+end
+
+@enduml

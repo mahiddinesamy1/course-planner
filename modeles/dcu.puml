@@ -1,0 +1,32 @@
+@startuml
+left to right direction
+skinparam style strictuml
+skinparam packageStyle rect
+skinparam backgroundcolor transparent
+skinparam defaultfontname Verdana
+title Diagramme des cas d'utilisation (DCU)\npour un système de gestion de l'apprentissage (SGA)
+actor Enseignant as En
+actor Étudiant as Et
+(«actor» <b>SGB\nSystème de\ngestion des\nbordereaux) as SGB #AntiqueWhite
+rectangle "SGA" {
+  (CU01\nGérer\ncours) as CU01 #AntiqueWhite
+  En -- CU01
+  (CU02\nGérer\nquestions) as CU02 #AntiqueWhite
+  En -- CU02
+  (CU03\nCorriger\ndevoir) as CU03 #AntiqueWhite
+  En -- CU03 
+  CU03 -- SGB
+  (CU04\nGérer\ndevoirs) as CU04 #AntiqueWhite
+  En -- CU04
+  CU04 -- SGB
+  (CU05\nGérer\nquestionnaires) as CU05 #AntiqueWhite
+  En -- CU05
+  CU05 -- SGB
+  (CU06\nRemettre\ndevoir) as CU06 #AntiqueWhite
+  Et -- CU06
+  CU06 -- SGB
+  (CU07\nPasser\nquestionnaire) as CU07 #AntiqueWhite
+  Et -- CU07
+  CU07 -- SGB
+}
+@enduml

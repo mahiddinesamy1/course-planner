@@ -1,0 +1,28 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour obtenir les cours SGA créés par un enseignant
+
+participant ":GestionnaireCours" as gestCours
+participant ":Universite" as uni
+participant "listeCours:EspaceCours[]" as listeCours
+
+->gestCours : listeCours = recupererListeCoursSGA()
+note right : selon Contrôleur\n(GestionnaireCours est\nun contrôleur de session)
+
+gestCours -> uni : tableCoursSGA = getCours("coursSGA")
+
+create listeCours
+gestCours -->> listeCours : listeCours = create
+note right : selon Créateur\n(GestionnaireCours utilise\nétroitement listeCours)
+
+loop espaceCours in tableCoursSGA
+    gestCours -> uni : idEnseignantActuel = getIdEnseignantActuel()
+    note right : selon Expert
+
+ alt espaceCours.idEnseignant == idEnseignantActuel
+    gestCours -> listeCours : push(espaceCours)
+
+ end alt
+end loop
+@enduml

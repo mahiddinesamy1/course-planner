@@ -1,0 +1,15 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour le scénario <i>Supprimer devoir</i>
+actor ":Enseignant" as e
+participant ":Système" as s
+e->s : getListeDevoirsParIdEnseignant(idEnseignant : number)
+e<<--s : affiche la liste des devoirs de l'enseignant
+
+e->s : supprimerDevoir(idDevoir : number)
+e<<--s : confirme la suppression du devoir et affiche la nouvelle liste de devoirs
+@enduml

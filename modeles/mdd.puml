@@ -1,0 +1,128 @@
+@startuml MDD
+skinparam style strictuml
+skinparam defaultfontname Verdana
+left to right direction
+hide empty members
+' skinparam linetype ortho
+title Modèle du domaine (MDD)\npour un système de gestion de l'apprentissage (SGA)
+
+ legend
+    |Couleur| Itération |
+    |<#CCF7FB>| 1|
+    |<#FFA07A>| 2|
+    |<#FFFFE0>| 3|
+ endlegend
+
+class Enseignant #CCF7FB {
+  prenom : string
+  nom : string
+  courriel : string
+}
+
+class Etudiant #CCF7FB{
+  firstName : string
+  lastName : string
+  email : string
+  permanentCode : string
+}
+
+class Cours #CCF7FB{
+  sigle : string
+  titre : string
+  ' idEnseignant : number
+}
+
+class EspaceCours #FFA07A{
+  sigle: string
+  titre: string
+  groupe : number
+  capacite : number
+  dateDebut : string
+  dateFin : string
+  ' idEnseignant : number
+}
+
+class Question #CCF7FB{
+  nom : string
+  ' a verifier :
+  tags : string[]
+  question : string
+  texteBonneReponse : string
+  texteMauvaiseReponse : string
+  type : QuestionType
+  reponse : string
+  ' idCours : number
+  ' idEnseignant : number
+}
+
+class Universite #FFA07A{
+}
+
+class Devoir #FFA07A{
+    nom: string
+    description: string
+    noteMaximale: number
+    dateDebut: string
+    dateFin: string
+    estVisible: boolean
+}
+
+class DevoirRemis #FFFFE0{
+    nom: string
+    description: string
+    dateRemise: string
+    note: number
+    corrige: boolean
+}
+
+class GroupeCours #FFFFE0{
+  groupe : number
+  capacite : number
+  dateDebut : string
+  dateFin : string
+  ' idEnseignant : number
+}
+
+class Questionnaire #FFFFE0{
+    description: string
+    estActif: boolean
+}
+
+class QuestionnaireRemis #FFFFE0{
+    description: string
+    estCorrige: boolean
+    note: number
+    idEtudiant: number
+    idQuestionnaire: number
+}
+
+Universite "1" -- "*" Cours : offre >
+' Universite "1" -- "*" Etudiant : inscrit >
+Universite "1" -- "*" Enseignant : emploie >
+Universite "1" -- "*" Etudiant : étudie-à < 
+Universite "1" -- "*" EspaceCours : possède >
+
+GroupeCours "*" -- "1" Cours : décrit <
+GroupeCours "1" -- "1" EspaceCours : décrit >
+
+Enseignant "1" -- "*" GroupeCours : enseigne >
+Enseignant "1" -- "*" Question : crée >
+Enseignant "1" -- "*" Devoir : attribue >
+Enseignant "1" -- "*" DevoirRemis : corrige >
+Enseignant "1" -- "*" QuestionnaireRemis : corrige >
+
+Question "*" -- "1" EspaceCours : contient  <
+Devoir "*" -- "1" EspaceCours : possède  <
+DevoirRemis "*" -- "1" EspaceCours : contient  <
+QuestionnaireRemis "*" -- "1" EspaceCours : contient  <
+Questionnaire "*" -- "1" EspaceCours : possède  <
+Questionnaire "1" -- "*" Question : est-composé-de  >
+Questionnaire "*" -left- "1" Enseignant : attribue < 
+
+Etudiant "*" -- "1" GroupeCours : est-inscrit-à >
+Etudiant "1" -- "*" Question : répond-à >
+Etudiant "1" -- "*" DevoirRemis : remet >
+Etudiant "*" -- "1" EspaceCours : est-inscrit-à >
+Etudiant "1" -- "*" QuestionnaireRemis : remet >
+
+@enduml

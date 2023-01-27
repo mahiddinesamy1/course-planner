@@ -1,0 +1,23 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour <b>recupererQuestionnaire(idQuestionnaire: number, idEspaceCours: number)</b>
+participant ":GestionnaireQuestionnaire" as gq
+participant ":Universite <sup>1</sup>" as u
+participant "espacesCours:Map<number,EspaceCours>" as mec
+participant "espaceCours:EspaceCours" as ec
+participant "questionnaires:Map<number,Questionnaire>" as mq
+
+-> gq : questionnaire = recupererQuestionnaire\n(idQuestionnaire: number, idEspaceCours: number)
+note right : selon <b>Contrôleur</b>\n(GestionnaireDevoir est\nun controleur de session)
+gq -> u : espaceCours = getEspaceCoursParId(idEspaceCours)
+note right : selon <b>Expert</b> (Universite\nagrège les espaces cours)\net <b>Transformer ID</b> (Universite\npossède une Map avec\nidEspaceCours comme clé)
+
+u -> mec : espaceCours = get(idEspaceCours)
+
+gq -> ec : questionnaire = getQuestionnaireParId(idQuestionnaire)
+note right : selon <b>Expert</b> (EspaceCours\ncontient les Questionnaires) \net <b>Transformer ID</b> (EspaceCours\npossède une Map avec\nidQuestionnaire comme clé
+
+ec -> mq : questionnaire = get(idQuestionnaire)
+
+@enduml

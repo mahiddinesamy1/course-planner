@@ -1,0 +1,25 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour ajouter une question
+participant ":GestionnaireQuestion" as c
+participant "objQuestion:Question" as q
+
+
+->c : objQuestion = ajouterQuestion(nom: string, type: string, tags: string[],\n question: string, texteBonneReponse: string,\n texteMauvaiseReponse: string, reponse: string, idCours: number, idEnseignant: number)
+note right : selon Controleur (GestionnaireQuestion est \nun contrôleur de session)
+
+
+create q 
+c --> q : objQuestion = create
+note right : selon Créateur (GestionnaireQuestion\nenregistre Question)
+
+
+alt Question.rechercher("nom", objQuestion.getNom()).length == 0)
+c -> q : sauvegarder()
+note right : selon Expert
+
+else
+end
+
+@enduml

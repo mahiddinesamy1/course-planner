@@ -1,0 +1,19 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour récupérer les notes d'un devoir
+participant ":GestionnaireDevoir" as gd
+participant "espaceCours:EspaceCours" as c
+
+->gd : etudiantsNotes =  recupererEtudiantsNotes\n(idEspaceCours)
+note right : selon Controleur (GestionnaireDevoir est \nun contrôleur de session)
+
+gd->c : rechercher("idEspaceCours", idEspaceCours)
+note right : selon Expert et Transformer ID
+
+gd->c : etudiants = getEtudiants()
+note right : selon Expert
+
+gd->c : notes = getNotes()
+note right : selon Expert
+@enduml

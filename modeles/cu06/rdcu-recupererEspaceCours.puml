@@ -1,0 +1,17 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour <b>recupererEspaceCours(idEspaceCours: number)</b>
+participant ":GestionnaireEspaceCours" as ge
+participant ":Universite <sup>1</sup>" as u
+participant "espacesCours:Map<idEspaceCours, EspaceCours>" as mec
+
+->ge : espaceCours = recupererEspaceCours(idEspaceCours: number)
+note right : selon <b>Contrôleur</b>\n(GestionnaireEspaceCours est\nun controleur de session)
+
+ge -> u : espaceCours = getEspaceCoursParId(idEspaceCours)
+note right : selon <b>Expert</b> (Universite\ncontient les espaces cours)\net <b>Transformer ID</b> (Universite\npossède une Map avec\nidEspaceCours comme clé)
+
+u -> mec : espaceCours = get(idEspaceCours)
+
+@enduml

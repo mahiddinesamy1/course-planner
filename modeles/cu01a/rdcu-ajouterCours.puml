@@ -1,0 +1,50 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+scale 350 height
+title RDCU pour ajouter un cours SGA :\n<b>ajouterCours</b>
+
+participant ":ControleurCours" as ctrlCours
+participant ":BDD" as bdd
+participant "modeles: Map<String, Map<number, any>>" as modeles
+participant "service:Service" as service
+participant ":SGB" as sgb
+participant "tableCoursSGB:Map<number,any>" as tableSGB
+participant "cours:Cours" as cours
+participant "tableCoursSGA:Map<number,any>" as tableSGA
+
+->ctrlCours : cours = ajouterCours(token, idCours)
+note right : selon Contrôleur\n(ControleurCours est\nl'objet racine)
+
+ctrlCours -> bdd : tableCoursSGB = getTable("coursSGB")
+note right : selon Expert
+
+bdd -> modeles : tableCoursSGB = get("coursSGB")
+note right : selon Expert
+
+ctrlCours -> bdd : tableCoursSGA = getTable("coursSGA")
+note right : selon Expert
+
+bdd -> modeles : tableCoursSGA = get("coursSGA")
+note right : selon Expert
+
+create service
+ctrlCours -->> service : service = create
+note right : selon Créateur\n(ControleurCours utilise\nétroitement Service)
+
+ctrlCours ->> service : [Etudiant] = getEtudiantsDuCoursSGB(token, idCours)
+note right : selon Expert et\n<b>Transformer ID en objets</b>
+
+service ->> sgb : [Etudiant] = fetch("/api/v1/course/:course/students")
+note right : selon Expert (SGB possède les informations des étudiants)
+
+ctrlCours -> tableSGB : cours = get(idCours)
+note right : selon Expert et\n<b>Transformer ID en objets</b>
+
+ctrlCours -> cours : ajouterEtudiants([Etudiant])
+note right : selon Expert
+
+ctrlCours -> tableSGA : set(idCours, cours)
+note right : selon Expert
+
+@enduml

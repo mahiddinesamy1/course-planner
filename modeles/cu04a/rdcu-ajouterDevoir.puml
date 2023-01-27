@@ -1,0 +1,40 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour ajouter un devoir
+participant ":GestionnaireDevoir" as gd
+participant "objDevoir:Devoir" as d
+participant ":Universite <sup>1</sup>" as u
+participant "espaceCours:EspaceCours" as ec
+participant "espacesCours:Map<EspaceCours>" as mec
+participant "devoirs:Map<Devoir>" as md
+
+->gd : objDevoir =  ajouterDevoir(nom, description, noteMaximale, \n dateDebut, dateFin, estVisible, idEspaceCours)
+note right : selon Controleur (GestionnaireDevoir est \nun contrôleur de session)
+
+create d 
+gd --> d : objDevoir = create
+' note right : selon Créateur (EspaceCours\naggrège Devoir)
+
+' gd --> ec : espaceCours = rechercher("idEspaceCours",idEspaceCours)
+' note right : selon Expert (EspaceCours\ncontient les devoirs)
+
+' gd --> ec : ajouterDevoir(objDevoir)
+
+' gd --> ec : augmenterCptDevoirs() 
+' note right : selon Expert (EspaceCours\ncontient le nombre de devoirs)
+
+gd --> u : espaceCours = getEspaceCoursParId(idEspaceCours)
+note right : selon Expert (Universite\ncontient les espaces cours)
+
+u --> mec : get(idEspaceCours)
+
+alt objDevoir.dateDebut < objDevoir.dateFin
+gd --> ec : ajouterDevoir(objDevoir)
+' gd -> d : sauvegarder()
+note right : selon Expert (EspaceCours\ncontient les devoirs)
+
+ec --> md : set(objDevoir)
+end
+
+@enduml

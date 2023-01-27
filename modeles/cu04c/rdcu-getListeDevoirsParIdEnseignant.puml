@@ -1,0 +1,14 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour obtenir tous les devoirs d'un enseignant
+participant ":GestionnaireDevoir" as gd
+participant "devoir:Devoir" as d
+
+-> gd : listeDevoirs = getListeDevoirsParIdEnseignant(idEnseignant)
+note right : selon Controleur (GestionnaireDevoir est \nun contrôleur de session)
+gd->d : rechercher("idEnseignant", idEnseignant)
+note right : selon Expert et Transformer ID
+
+
+@enduml

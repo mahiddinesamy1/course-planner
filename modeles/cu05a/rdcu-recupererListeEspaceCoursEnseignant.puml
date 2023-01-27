@@ -1,0 +1,14 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour <b>recupererListeEspaceCoursEnseignant()</b>
+participant ":GestionnaireEspaceCours" as ge
+participant ":Universite <sup>1</sup>" as u
+
+->ge : listeEspaceCours = recupererListeEspaceCoursEnseignant()
+note right : selon <b>Contrôleur</b>\n(GestionnaireEspaceCours est\nun controleur de session)
+
+ge -> u : listeEspaceCours = getTousEspaceCoursEnseignant()
+note right : selon <b>Expert</b> (Universite\ncontient les espaces cours)
+
+@enduml

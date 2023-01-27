@@ -1,0 +1,49 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour <b>modifierQuestionnaire(description: string, estActif: boolean, idsQuestions: number[], idQuestionnaire: number, idEspaceCours: number))
+participant ":GestionnaireQuestionnaire" as gq
+participant "espaceCours:\nEspaceCours" as ec
+participant ":Universite <sup>1</sup>" as u
+participant "espacesCours:\nMap<number,EspaceCours>" as mec
+participant "espaceCours:EspaceCours" as ec
+participant "questionnaires:\nMap<number,Questionnaire>" as mq
+participant "questionsEspaceCours:\nMap<number,Question>" as mqstec
+participant "questionnaire:\nQuestionnaire" as q
+participant "question:\nQuestion" as qst
+participant "questionsQuestionnaire:\nMap<number,Question>" as mqstq
+
+
+->gq : modifierQuestionnaire(description: string,\nestActif: boolean, idsQuestions: number[],\nidQuestionnaire: number, idEspaceCours: number))
+note right : selon Controleur (GestionnaireQuestionnaire est \nun contrôleur de session)
+
+gq -> u : espaceCours = getEspaceCoursParId(idEspaceCours)
+note right : selon Expert (Universite contient \ntous les espaces cours) \net <b>Transformer ID</b> (Universite\npossède une Map avec\nidEspaceCours comme clé)
+
+u -> mec : espaceCours = get(idEspaceCours)
+
+gq -> ec : questionnaire = getQuestionnaireParId(idQuestionnaire)
+note right : selon Expert (EspaceCours contient \ntous les questionnaires) \net <b>Transformer ID</b> (EspaceCours\npossède une Map avec\nidQuestionnaire comme clé)
+
+ec -> mq : questionnaire = get(idQuestionnaire)
+
+gq -> q : setDescription(description)
+note right : Selon Expert (mutateur d'attribut)
+gq -> q : setEstActif(estActif)
+note right : Selon Expert (mutateur d'attribut)
+
+gq -> q : questions = getQuestions()
+note right : selon Expert (Questionnaire contient \n ses questions)
+
+gq -> mqstq : clear()
+
+loop idQuestion of idsQuestions
+gq -> ec : question = getQuestionParId(idQuestion)
+note right : selon <b>Expert</b> (EspaceCours contient \n toutes les questions)\net <b>Transformer ID</b> (EspaceCours\npossède une Map avec\nidQuestion comme clé)
+ec -> mqstec : question = get(idQuestion)
+gq -> q : ajouterQuestion(question)
+note right : selon <b>Expert</b> (Questionnaire agrège \n des questions)
+q -> mqstq : set(question.getId(), question)
+end 
+
+@enduml

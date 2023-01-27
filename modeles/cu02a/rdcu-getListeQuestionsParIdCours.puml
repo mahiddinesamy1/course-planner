@@ -1,0 +1,14 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour obtenir toutes les questions pour un cours
+participant ":GestionnaireQuestion" as gq
+participant ":Question" as q
+
+-> gq : listeQuestions = getListeQuestionsParIdCours(idCours)
+note right : selon Controleur (GestionnaireQuestion est \nun contrôleur de session)
+gq->q : listeQuestions = rechercher("idCours", idCours)
+note right : selon Expert et Transformer ID
+
+
+@enduml
