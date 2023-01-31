@@ -1,9 +1,8 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
-import LocalCalendar from '@/components/LocalCalendar'
-import CourseInformationForm from '@/components/CourseInformationForm'
+import LocalCalendar from '@/components/localCalendar'
+import CourseInformationForm from '@/components/courseInformationForm'
 
 const inter = Inter({ subsets: ['latin'] })
 

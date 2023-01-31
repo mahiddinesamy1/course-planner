@@ -14,20 +14,19 @@ interface Event {
 }
 
 const LocalCalendar: React.FC = () => {
-    const [events, setEvents] = useState<Event[]>([]);
+    const [events, setEvents] = useState<Event[]>(JSON.parse(localStorage.getItem('events') || ""));
 
-    // retrieve events from local storage on component mount
-    useEffect(() => {
-        const storedEvents = localStorage.getItem('events');
-        if (storedEvents) {
-            setEvents(JSON.parse(storedEvents));
+    const updateStateOnStorageChange = (event: StorageEvent) => {
+        if (event.key === "events") {
+            setEvents(JSON.parse(event.newValue || ""));
         }
-    }, []);
+    };
 
-    // store events in local storage on update
+    // use local storage state on mount and cleanup on unmount
     useEffect(() => {
-        localStorage.setItem('events', JSON.stringify(events));
-    }, [events]);
+        window.addEventListener("storage", updateStateOnStorageChange);
+        return () => window.removeEventListener("storage", updateStateOnStorageChange);
+    }, []);
 
     const localizer = momentLocalizer(moment);
 
