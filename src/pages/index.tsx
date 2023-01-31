@@ -3,6 +3,7 @@ import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import LocalCalendar from '@/components/localCalendar'
 import CourseInformationForm from '@/components/courseInformationForm'
+import DataController from '@/components/dataController'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,8 +18,11 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div>
-          <LocalCalendar />
-          <CourseInformationForm />
+          
+          <DataController>
+            <LocalCalendar />
+            <CourseInformationForm />
+          </DataController>
         </div>
       </main>
     </>

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Input, Select } from "antd";
+import DataControllerContext from "./dataControllerContext";
 
 interface Props {}
 
@@ -10,25 +11,15 @@ enum Session {
 }
 
 const CourseInformationForm: React.FC<Props> = () => {
-    const [sigle, setSigle] = useState("");
-    const [groupe, setGroupe] = useState(0);
+    const [code, setSigle] = useState("");
+    const [group, setGroupe] = useState(0);
     const [annee, setAnnee] = useState(0);
     const [session, setSession] = useState(1);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const {notifyCourseFormSubmit} = useContext(DataControllerContext);
 
-        const url = new URL('https://portail.etsmtl.ca/ICal/SeancesCours');
-        url.searchParams.set('Sigle', sigle);
-        url.searchParams.set('Groupe', groupe < 9 ? "0"+groupe : ""+groupe);
-        url.searchParams.set('Session', annee+""+session);
-
-        const finalUrl = `/api/proxy?url=${encodeURIComponent(url.href)}`;
-
-
-        const data  = await fetch(finalUrl);
-
-        console.log(data.text());
-
+    const handleSubmit = (e: React.FormEvent) => {
+        notifyCourseFormSubmit(code, group, annee, session);        
         return false;
     };
 
@@ -36,14 +27,14 @@ const CourseInformationForm: React.FC<Props> = () => {
     <Form onFinish={handleSubmit}>
       <Form.Item label="Sigle">
         <Input
-          value={sigle}
+          value={code}
           onChange={e => setSigle(e.target.value)}
           type="text"
         />
       </Form.Item>
       <Form.Item label="Groupe">
         <Input
-          value={groupe}
+          value={group}
           onChange={e => setGroupe(parseInt(e.target.value))}
           type="number"
         />
