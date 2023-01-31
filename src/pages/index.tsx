@@ -1,9 +1,10 @@
 import Head from 'next/head'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
-import LocalCalendar from '@/components/localCalendar'
-import CourseInformationForm from '@/components/courseInformationForm'
-import DataController from '@/components/dataController'
+import LocalCalendar from '@/components/view/localCalendar'
+import CourseInformationForm from '@/components/view/courseInformationForm'
+import DataController from '@/components/controller/dataController'
+import ClearCalButton from '@/components/view/clearCalButton'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,6 +23,7 @@ export default function Home() {
           <DataController>
             <LocalCalendar />
             <CourseInformationForm />
+            <ClearCalButton />
           </DataController>
         </div>
       </main>
