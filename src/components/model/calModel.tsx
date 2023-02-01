@@ -20,14 +20,11 @@ export const CalModel: React.FC<CalModelProps> = ({children}) => {
 
     const isFirstRender = useRef<boolean>(true);
 
-    useEffect(()=>{ // loads true data from local storage on boot
-        setEvents(getValue(LOCAL_STORE_KEY, "[]"));
-    }, []);
-
     useEffect(()=>{
-        if (isFirstRender.current) { // prevent data override when useState creates the dummy array that will be replaced by boot use state
+        if (isFirstRender.current) { // replace dummy array with true values when it's created
             isFirstRender.current=false;
-        } else { // updates local storage once data changes
+            setEvents(getValue(LOCAL_STORE_KEY, "[]"));
+        } else { // updates local storage once true data changes
             setValue(LOCAL_STORE_KEY, events);
         }
     }, [events]);
