@@ -1,6 +1,6 @@
 import CalEvent from './calEvent'
-import React, {useState, createContext, useEffect} from 'react'
-
+import React, {useState, createContext, useEffect, useRef} from 'react'
+import {getValue, setValue} from './localStore';
 
 type CalModelContextProps = {
     events: CalEvent[],
@@ -16,10 +16,20 @@ type CalModelProps = {
 const LOCAL_STORE_KEY = 'events';
 
 export const CalModel: React.FC<CalModelProps> = ({children}) => {
-    const [events, setEvents] = useState<CalEvent[]>(JSON.parse(typeof window === "undefined" ? "[]" : localStorage.getItem(LOCAL_STORE_KEY) || "[]"));
+    const [events, setEvents] = useState<CalEvent[]>([]); // creates a dummy array because of SSR and client-server HTML dif exception
+
+    const isFirstRender = useRef<boolean>(true);
+
+    useEffect(()=>{ // loads true data from local storage on boot
+        setEvents(getValue(LOCAL_STORE_KEY, "[]"));
+    }, []);
 
     useEffect(()=>{
-        localStorage.setItem(LOCAL_STORE_KEY, JSON.stringify(events));
+        if (isFirstRender.current) { // prevent data override when useState creates the dummy array that will be replaced by boot use state
+            isFirstRender.current=false;
+        } else { // updates local storage once data changes
+            setValue(LOCAL_STORE_KEY, events);
+        }
     }, [events]);
 
     return (

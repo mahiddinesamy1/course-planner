@@ -23,7 +23,6 @@ export const CalController: React.FC<CalControllerProps> = ({children}) => {
 
         const newEvents = mapICALtoEvent(textData);
         const filteredEvents = newEvents.filter((event: CalEvent) => !events.find((newEvent: CalEvent) => newEvent.uid === event.uid));
-
         setEvents([...filteredEvents, ...events]);
     }
 
