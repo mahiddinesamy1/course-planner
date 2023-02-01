@@ -5,7 +5,7 @@ import LocalCalendar from '@/components/view/localCalendar'
 import CourseInformationForm from '@/components/view/courseInformationForm'
 import {CalController} from '@/components/controller/calController'
 import ClearCalButton from '@/components/view/clearCalButton'
-import {CalModel} from '@/model/calModel'
+import {CalModel} from '@/components/model/calModel'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {

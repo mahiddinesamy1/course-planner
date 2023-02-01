@@ -1,8 +1,8 @@
 import React, {PropsWithChildren, useContext, createContext} from 'react';
-import CalEvent from '@/model/calEvent'
-import fetchCourseICAL from './util/fetchCourseICAL'
-import mapICALtoEvent from './util/mapICALtoEvent';
-import { CalModelContext } from '@/model/calModel';
+import CalEvent from '@/components/model/calEvent'
+import fetchCourseICAL from '../util/fetchCourseICAL'
+import {mapICALtoEvent} from '../util/calEventOperations';
+import { CalModelContext } from '@/components/model/calModel';
 
 type CalControllerContextProps = {
     notifyCourseFormSubmit : (code: string, group: number, year: number, semester:number) => void;

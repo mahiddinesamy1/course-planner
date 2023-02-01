@@ -1,7 +1,7 @@
-import CalEvent from 'src/model/calEvent'
+import CalEvent from '@/components/model/calEvent'
 const ical = require('ical.js');
 
-const mapICALtoEvent = (icalData: string):CalEvent[] => {
+export const mapICALtoEvent = (icalData: string):CalEvent[] => {
     const baseComponent = new ical.Component(ical.parse(icalData));
     const vEvents = baseComponent.getAllSubcomponents('vevent');
     const calEvents = vEvents.map((vEvent: any) => {
@@ -17,4 +17,7 @@ const mapICALtoEvent = (icalData: string):CalEvent[] => {
     return calEvents;
 }
 
-export default mapICALtoEvent;
+export const findEarliestEventDate = (events: CalEvent[]):Date => {
+    const eventStart = events.map((event:CalEvent)=>{return event.start});
+    return eventStart.reduce((earliestEventYet:Date, event:Date) => {return earliestEventYet < event ? earliestEventYet : event}, new Date());
+}
