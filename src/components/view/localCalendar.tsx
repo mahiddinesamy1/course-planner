@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import CalEvent from 'src/model/calEvent'
 import { CalDataContext } from '@/model/calData';
 
 const LocalCalendar: React.FC = () => {

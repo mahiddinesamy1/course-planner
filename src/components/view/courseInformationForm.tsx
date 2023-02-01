@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Form, Input, Select } from "antd";
-import DataControllerContext from "src/components/controller/dataControllerContext";
+import {DataControllerContext} from "src/components/controller/dataController";
 
 interface Props {}
 

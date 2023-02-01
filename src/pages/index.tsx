@@ -3,7 +3,7 @@ import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import LocalCalendar from '@/components/view/localCalendar'
 import CourseInformationForm from '@/components/view/courseInformationForm'
-import DataController from '@/components/controller/dataController'
+import {DataController} from '@/components/controller/dataController'
 import ClearCalButton from '@/components/view/clearCalButton'
 import {CalData} from 'src/model/calData'
 const inter = Inter({ subsets: ['latin'] })

@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import DataControllerContext from "src/components/controller/dataControllerContext";
+import {DataControllerContext} from "src/components/controller/dataController";
 
 interface ClearCalProps {}
 

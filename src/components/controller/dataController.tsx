@@ -1,13 +1,21 @@
-import React, {PropsWithChildren, useContext} from 'react';
-import DataControllerContext from "./dataControllerContext";
+import React, {PropsWithChildren, useContext, createContext} from 'react';
 import CalEvent from '@/model/calEvent'
 import fetchCourseICAL from './util/fetchCourseICAL'
 import mapICALtoEvent from './util/mapICALtoEvent';
 import { CalDataContext } from '@/model/calData';
 
-interface DataControllerProps {}
+type DataControllerContextProps = {
+    notifyCourseFormSubmit : (code: string, group: number, year: number, semester:number) => void;
+    notifyClearCal : () => void;
+}
 
-const DataController: React.FC<PropsWithChildren<DataControllerProps>> = ({children}) => {
+export const DataControllerContext = createContext<DataControllerContextProps>({} as DataControllerContextProps);
+
+type DataControllerProps = {
+    children: React.ReactNode;
+}
+
+export const DataController: React.FC<DataControllerProps> = ({children}) => {
     const {events, setEvents} = useContext(CalDataContext);
 
     const notifyCourseFormSubmit = async (code: string, group: number, year: number, semester:number) => {
@@ -29,5 +37,3 @@ const DataController: React.FC<PropsWithChildren<DataControllerProps>> = ({child
         </DataControllerContext.Provider>
     );
 }
-
-export default DataController
