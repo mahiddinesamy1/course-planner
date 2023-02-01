@@ -5,7 +5,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { CalModelContext } from '@/components/model/calModel';
 import {findEarliestEventDate} from '../util/calEventOperations'
 
-const LocalCalendar: React.FC = () => {
+const EventCalendar: React.FC = () => {
     const {events} = useContext(CalModelContext);
     const [selectedDate, setSelectedDate] = useState<Date>(findEarliestEventDate(events));
 
@@ -35,4 +35,4 @@ const LocalCalendar: React.FC = () => {
     );
 };
 
-export default LocalCalendar;
+export default EventCalendar;

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
-import LocalCalendar from '@/components/view/localCalendar'
+import EventCalendar from '@/components/view/eventCalendar'
 import CourseInformationForm from '@/components/view/courseInformationForm'
 import {CalController} from '@/components/controller/calController'
 import ClearCalButton from '@/components/view/clearCalButton'
@@ -21,7 +21,7 @@ export default function Home() {
         <div>
           <CalModel>
             <CalController>
-              <LocalCalendar />
+              <EventCalendar />
               <CourseInformationForm />
               <ClearCalButton />
             </CalController>
