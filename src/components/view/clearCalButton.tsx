@@ -1,10 +1,10 @@
 import React, {useContext} from "react";
-import {DataControllerContext} from "src/components/controller/dataController";
+import {CalControllerContext} from "@/components/controller/calController";
 
 interface ClearCalProps {}
 
 const ClearCalButton: React.FC<ClearCalProps> = () => {
-    const {notifyClearCal} = useContext(DataControllerContext); 
+    const {notifyClearCal} = useContext(CalControllerContext); 
     
     return (
         <button onClick={notifyClearCal}>

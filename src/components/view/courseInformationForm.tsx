@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Form, Input, Select } from "antd";
-import {DataControllerContext} from "src/components/controller/dataController";
+import {CalControllerContext} from "@/components/controller/calController";
 
 interface Props {}
 
@@ -16,7 +16,7 @@ const CourseInformationForm: React.FC<Props> = () => {
     const [annee, setAnnee] = useState(0);
     const [session, setSession] = useState(1);
 
-    const {notifyCourseFormSubmit} = useContext(DataControllerContext);
+    const {notifyCourseFormSubmit} = useContext(CalControllerContext);
 
     const handleSubmit = (e: React.FormEvent) => {
         notifyCourseFormSubmit(code, group, annee, session);        

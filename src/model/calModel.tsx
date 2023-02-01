@@ -2,20 +2,20 @@ import CalEvent from './calEvent'
 import React, {useState, createContext, useEffect} from 'react'
 
 
-type CalDataContextProps = {
+type CalModelContextProps = {
     events: CalEvent[],
     setEvents: React.Dispatch<React.SetStateAction<CalEvent[]>>;
 }
 
-export const CalDataContext = createContext<CalDataContextProps>({} as CalDataContextProps);
+export const CalModelContext = createContext<CalModelContextProps>({} as CalModelContextProps);
 
-type CalDataProps = {
+type CalModelProps = {
     children: React.ReactNode;
 }
 
 const LOCAL_STORE_KEY = 'events';
 
-export const CalData: React.FC<CalDataProps> = ({children}) => {
+export const CalModel: React.FC<CalModelProps> = ({children}) => {
     const [events, setEvents] = useState<CalEvent[]>(JSON.parse(typeof window === "undefined" ? "[]" : localStorage.getItem(LOCAL_STORE_KEY) || "[]"));
 
     useEffect(()=>{
@@ -23,8 +23,8 @@ export const CalData: React.FC<CalDataProps> = ({children}) => {
     }, [events]);
 
     return (
-        <CalDataContext.Provider value = {{events, setEvents}}>
+        <CalModelContext.Provider value = {{events, setEvents}}>
             {children}
-        </ CalDataContext.Provider>
+        </ CalModelContext.Provider>
     )
 }

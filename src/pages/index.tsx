@@ -3,9 +3,9 @@ import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import LocalCalendar from '@/components/view/localCalendar'
 import CourseInformationForm from '@/components/view/courseInformationForm'
-import {DataController} from '@/components/controller/dataController'
+import {CalController} from '@/components/controller/calController'
 import ClearCalButton from '@/components/view/clearCalButton'
-import {CalData} from 'src/model/calData'
+import {CalModel} from '@/model/calModel'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
@@ -19,13 +19,13 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div>
-          <CalData>
-            <DataController>
+          <CalModel>
+            <CalController>
               <LocalCalendar />
               <CourseInformationForm />
               <ClearCalButton />
-            </DataController>
-          </CalData>
+            </CalController>
+          </CalModel>
         </div>
       </main>
     </>
