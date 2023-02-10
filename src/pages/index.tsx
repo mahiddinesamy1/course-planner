@@ -23,6 +23,7 @@ export default function Home() {
             <CalController>
               <EventCalendar />
               <CourseInformationForm />
+              <CourseActivityAdd />
               <ClearCalButton />
             </CalController>
           </CalModel>
