@@ -1,8 +1,8 @@
 import { CalControllerContext } from "@/components/controller/calController";
 import { Timeline } from "antd";
 import React, { useState, useContext } from "react";
-import CalEvent from "../model/calEvent";
-import CalEventModel from "../model/calEventModel";
+
+import { CalEvent } from "../model/calEvent"
 import { CalModelContext } from "../model/calModel";
 
 interface Props {}

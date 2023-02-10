@@ -7,6 +7,7 @@ import { CalModelContext } from '@/components/model/calModel';
 type CalControllerContextProps = {
     notifyCourseFormSubmit : (code: string, group: number, year: number, semester:number) => void;
     notifyClearCal : () => void;
+    notifyAddActivity : () => void;
 }
 
 export const CalControllerContext = createContext<CalControllerContextProps>({} as CalControllerContextProps);
@@ -29,9 +30,11 @@ export const CalController: React.FC<CalControllerProps> = ({children}) => {
     const notifyClearCal = () => {
         setEvents([]);
     }
-
+     const notifyAddActivity = () => {
+        setEvents([]);
+    }
     return (
-        <CalControllerContext.Provider value={{notifyCourseFormSubmit, notifyClearCal}}>
+        <CalControllerContext.Provider value={{notifyCourseFormSubmit, notifyClearCal, notifyAddActivity}}>
             {children}
         </CalControllerContext.Provider>
     );

@@ -6,6 +6,7 @@ import CourseInformationForm from '@/components/view/courseInformationForm'
 import {CalController} from '@/components/controller/calController'
 import ClearCalButton from '@/components/view/clearCalButton'
 import {CalModel} from '@/components/model/calModel'
+import CourseActivityAdd from '@/components/view/courseActivityAdd'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
