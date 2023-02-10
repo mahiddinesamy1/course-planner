@@ -1,5 +1,5 @@
 import React, {PropsWithChildren, useContext, createContext} from 'react';
-import CalEvent from '@/components/model/calEvent'
+import {CalEvent} from '@/components/model/calEvent'
 import fetchCourseICAL from '../util/fetchCourseICAL'
 import {mapICALtoEvent} from '../util/calEventOperations';
 import { CalModelContext } from '@/components/model/calModel';

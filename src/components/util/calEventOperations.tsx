@@ -1,4 +1,4 @@
-import CalEvent from '@/components/model/calEvent'
+import {CalEvent, CalEventType} from '@/components/model/calEvent'
 const ical = require('ical.js');
 
 export const mapICALtoEvent = (icalData: string):CalEvent[] => {
@@ -8,16 +8,37 @@ export const mapICALtoEvent = (icalData: string):CalEvent[] => {
         return {
             start: vEvent.getFirstPropertyValue('dtstart').toJSDate(),
             end: vEvent.getFirstPropertyValue('dtend').toJSDate(),
-            title: vEvent.getFirstPropertyValue('summary'),
-            description: vEvent.getFirstPropertyValue('description'),
-            location: vEvent.getFirstPropertyValue('location'),
-            uid: vEvent.getFirstPropertyValue('uid')
+            title: vEvent.getFirstPropertyValue('summary').trim(),
+            description: vEvent.getFirstPropertyValue('description').trim(),
+            type: iCalCategoryToType(vEvent.getFirstPropertyValue('categories').trim()),
+            location: vEvent.getFirstPropertyValue('location').trim(),
+            uid: vEvent.getFirstPropertyValue('uid').trim()
         }
-    });
+    }).filter((event:CalEvent) => {return event.type != undefined});
+
     return calEvents;
 }
 
 export const findEarliestEventDate = (events: CalEvent[]):Date => {
     const eventStart = events.map((event:CalEvent)=>{return event.start});
     return eventStart.reduce((earliestEventYet:Date, event:Date) => {return earliestEventYet < event ? earliestEventYet : event}, new Date());
+}
+
+function iCalCategoryToType(icalCategory: string): CalEventType|undefined {
+    let type: CalEventType|undefined;
+    switch (icalCategory) {
+        case "Labo": {
+            type= CalEventType.Laboratories
+            break;
+        }
+        case "C": {
+            type= CalEventType.Seminar
+            break;
+        }
+        default: { 
+            console.log("Type ", icalCategory, " unsupported")
+            break; 
+         } 
+    }
+    return type;
 }
