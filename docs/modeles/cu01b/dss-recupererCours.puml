@@ -1,0 +1,14 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour <b>CU01 - Récupérer cours</b>\nScénario principal
+actor ":Enseignant" as e
+participant ":Système" as s
+e->s : recupererListeCoursSGA()
+e<<--s : affiche la liste des cours de l'enseignant
+e->s : recupererCours(idCours : number)
+e<<--s : affiche les informations du cours incluant les étudiants inscrits
+@enduml

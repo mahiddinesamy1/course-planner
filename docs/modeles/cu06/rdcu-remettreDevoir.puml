@@ -1,0 +1,32 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+scale 350 height
+title RDCU pour <b>remettreDevoir(nom: string, description: string, dateDebut: string, dateFin: string, idEspaceCours: number, idEtudiant: number, idDevoir: number)</b>
+participant ":GestionnaireDevoir" as gd
+participant ":Universite <sup>1</sup>" as u
+participant "espacesCours:\nMap<number, EspaceCours>" as mec
+participant "espaceCours:EspaceCours" as ec
+participant "devoirRemis:DevoirRemis" as d
+participant "devoirsRemis:\nMap<number, DevoirRemis>" as md
+
+->gd : devoirRemis = remettreDevoir(nom: string,\ndescription: string, dateDebut: string,\ndateFin: string, idEspaceCours: number,\nidEtudiant: number, idDevoir: number)
+note right : selon <b>Contrôleur</b>\n(GestionnaireDevoir est\nun controleur de session)
+
+gd -> u : espaceCours = getEspaceCoursParId(idEspaceCours)
+note right : selon <b>Expert</b> (Universite\nagrège les espaces cours)\net <b>Transformer ID</b> (Universite\npossède une Map avec\nidEspaceCours comme clé)
+
+u -> mec : espaceCours = get(idEspaceCours)
+
+gd -> ec : devoirRemis = ajouterDevoirRemis(idDevoirRemis, nom, description, dateRemise, idEtudiant, idDevoir)
+note right : selon <b>Expert</b> (EspaceCours\ncontient les devoirs remis)
+
+create d
+ec --> d : devoirRemis = create(nom, description,\ndateRemise, idEtudiant, idDevoir)
+note right : selon <b>Créateur</b> (EspaceCours\nagrège tous les devoirs remis)
+
+ec -> md : set(idDevoirRemis, devoirRemis)
+
+
+
+@enduml

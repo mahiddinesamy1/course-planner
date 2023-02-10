@@ -1,0 +1,13 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour récupérer un devoir
+participant ":GestionnaireDevoir" as gd
+participant "devoir:Devoir" as d
+
+->gd : devoir = recupererDevoir(idDevoir)
+note right : selon Controleur (GestionnaireDevoir est \nun contrôleur de session)
+
+gd->d : rechercher("idDevoir", idDevoir)
+note right : selon Expert et Transformer ID
+@enduml

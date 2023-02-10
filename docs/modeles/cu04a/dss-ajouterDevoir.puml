@@ -1,0 +1,20 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour le scénario <i>Ajouter devoir</i>
+actor ":Enseignant" as e
+participant ":Système" as s
+e->s : recupererListeCoursSGA()
+e<<--s : affiche la liste des cours de l'enseignant
+e ->s : getListeDevoirsParIdCours(idEspaceCours : number)
+e<<--s : retourne les devoirs associés au cours
+
+loop tant que l'enseignant a des devoirs à ajouter
+
+e->s : ajouterDevoir(nom: string, description: string, noteMaximale: number, \n dateDebut: string, dateFin: string, estVisible: boolean, idEspaceCours: number)
+e<<--s : affiche les devoirs associé à l'espace cours
+end
+@enduml

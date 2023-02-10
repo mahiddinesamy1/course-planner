@@ -1,0 +1,14 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour <b>CU01 - Ajouter cours</b>\nScénario principal
+actor ":Enseignant" as e
+participant ":Système" as s
+e->s : recupererListeCoursSGB()
+s-->>e : affiche la liste des cours qu'enseigne l'enseignant
+e->s : ajouterCours(token : string, idCours : number)
+e<<--s : affiche les informations du cours incluant\nles étudiants inscrits dans le cours
+@enduml

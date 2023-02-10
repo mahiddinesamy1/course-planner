@@ -1,0 +1,250 @@
+@startuml
+class Etudiant {
+    -id: string
+    -firstName: string
+    -lastName: string
+    -email: string
+    -permanentCode: string
+    +getFirstName: string
+    +getLastName: string
+    +getId: string
+    +getEmail: string
+    +getPermanentCode: string
+}
+class InvalidParameterError extends Error {
+    -_code: number
+    +code: number
+}
+enum QuestionType {
+    VraiFaux
+    Multiple
+    Essai
+    Numerique
+    ReponseCourte
+}
+class Question extends EntiteBDD {
+    -id: number
+    -nom: string
+    -tags: string[]
+    -question: string
+    -texteBonneReponse: string
+    -texteMauvaiseReponse: string
+    -type: QuestionType
+    -reponse: any
+    -idCours: number
+    -idEnseignant: number
+    +getId(): number
+    +setId(id: number): void
+    +getNom(): string
+    +setNom(nom: string): void
+    +getTags(): string[]
+    +setTags(tags: string[]): void
+    +getQuestion(): string
+    +setQuestion(question: string): void
+    +getTexteBonneReponse(): string
+    +setTexteBonneReponse(texteBonneReponse: string): void
+    +getTexteMauvaiseReponse(): string
+    +setTexteMauvaiseReponse(texteMauvaiseReponse: string): void
+    +getType(): QuestionType
+    +setType(type: QuestionType): void
+    +getReponse(): any
+    +setReponse(reponse: any): void
+    +getIdCours(): number
+    +setIdCours(idCours: number): void
+    +getIdEnseignant(): number
+    +setIdEnseignant(idEnseignant: number): void
+    +genererId(): number
+    +sauvegarder(id?: any): void
+    +supprimer(): void
+    -{static} Compteur: number
+    +{static} NomTable: string
+    +{static} rechercher(attribut: string, valeurAttendue: any): Question[]
+}
+abstract class EntiteBDD {
+    #{abstract} setId(id: number): void
+    +{abstract} genererId(): number
+    +sauvegarder(nomTable: string, id?: any): void
+    +supprimer(nomTable: string, id?: any): void
+    +{static} rechercher(nomTable: string, attribut: string, valeurAttendue: any): any[]
+}
+abstract class Cours extends EntiteBDD {
+    -sigle: string
+    -titre: string
+    +getSigle: string
+    +getTitre: string
+}
+class Note {
+    -idCours: number
+    -type: string
+    -idType: number
+    -note: number
+    -idEtudiant: number
+    +getType(): string
+    +setType(value: string): void
+    +getNote(): number
+    +setNote(value: number): void
+    +getIdEtudiant(): number
+    +setIdEtudiant(value: number): void
+    +getIdType(): number
+    +setIdType(value: number): void
+    +getIdCours(): number
+    +setIdCours(value: number): void
+}
+class EspaceCours extends Cours {
+    -id: number
+    -groupe: number
+    -capacite: number
+    -dateDebut: string
+    -dateFin: string
+    -etudiants: Etudiant[]
+    -notes: Note[]
+    -idEnseignant: number
+    -cptDevoirs: number
+    +getId: number
+    +getGroupe: number
+    +getEtudiants: Etudiant[]
+    +getNotes: Note[]
+    +getDateDebut: string
+    +getDateFin: string
+    +getCapacite: string
+    +getIdEnseignant: number
+    +ajouterEtudiant(etudiant: Etudiant): void
+    +ajouterEtudiants(etudiants: Etudiant[]): void
+    +ajouterNotes(notes: Note[]): void
+    +setId(id: number): void
+    +getCptDevoirs(): number
+    +setCptDevoirs(cptDevoir: number): void
+    +augmenterCptDevoirs(): void
+    +reduireCptDevoirs(): void
+    +genererId(): number
+    +sauvegarder(id?: any): void
+    -{static} Compteur: number
+    +{static} NomTable: string
+    +{static} rechercher(attribut: string, valeurAttendue: any): EspaceCours[]
+}
+class ServiceRGB {
+    +getTousCoursSGB(token: string): Promise<any[]>
+    +getEtudiantsDuCoursSGB(token: string, idCours: number): Promise<any[]>
+    +getNotesDuCoursSGB(token: string, idCours: number): Promise<any[]>
+}
+class BDD {
+    -modeles: Map<String, Map<number, any>>
+    -_idEnseignantActuel: number
+    +idEnseignantActuel: number
+    +idEnseignantActuel: number
+    +getTable(nomTable: string): Map<number, any>
+    +initBDDPourEnseignant(token: string): void
+    +viderBDD(): void
+    -{static} instance: BDD
+    +{static} getInstance(): BDD
+}
+class NotFoundError extends Error {
+    -_code: number
+    +code: number
+}
+class AlreadyExistsError extends Error {
+    -_code: number
+    +code: number
+}
+class Universite {
+    +{static} getCoursSGB(): Map<number, any>
+    +{static} getCoursSGA(): Map<number, any>
+    +{static} getEnseignantCourant(): number
+}
+class GestionnaireCours {
+    +ajouterCours(token: string, idCoursSGB: number): Promise<EspaceCours>
+    +recupererListeCoursSGB(): any[]
+    +recupererListeCoursSGA(): any[]
+    +retirerCours(idCours: number): EspaceCours
+    +recupererCours(idCours: number): EspaceCours
+}
+class GestionnaireQuestion {
+    +ajouterQuestion(nom: string, type: string, tags: string[], question: string, texteBonneReponse: string, texteMauvaiseReponse: string, reponse: any, idCours: number, idEnseignant: number): Question
+    +modifierQuestion(nom: string, type: string, tags: string[], question: string, texteBonneReponse: string, texteMauvaiseReponse: string, reponse: any, idQuestion: number): Question
+    +getListeQuestionsParIdEnseignant(idEnseignant: number): Question[]
+    +getListeQuestionsParIdCours(idCours: number): Question[]
+    +y: any
+    +getQuestionParId(idQuestion: string): Question
+    +supprimerQuestion(idQuestion: number): void
+}
+class Devoir extends EntiteBDD {
+    -id: number
+    -nom: string
+    -description: string
+    -noteMaximale: number
+    -dateDebut: string
+    -dateFin: string
+    -estVisible: boolean
+    -idCours: number
+    -idEnseignant: number
+    +getId(): number
+    +setId(id: number): void
+    +getNom(): string
+    +setNom(nom: string): void
+    +getDescription(): string
+    +setDescription(description: string): void
+    +getNoteMaximale(): number
+    +setNoteMaximale(noteMaximale: number): void
+    +getDateDebut(): string
+    +setDateDebut(dateDebut: string): void
+    +getDateFin(): string
+    +setDateFin(dateFin: string): void
+    +isEstVisible(): boolean
+    +setEstVisible(estVisible: boolean): void
+    +getIdCours(): number
+    +getIdEnseignant(): number
+    +setIdEnseignant(idEnseignant: number): void
+    +setIdCours(idCours: number): void
+    +genererId(): number
+    +sauvegarder(id?: any): void
+    +supprimer(id: any): void
+    -{static} Compteur: number
+    +{static} NomTable: string
+    +{static} rechercher(attribut: string, valeurAttendue: any): Devoir[]
+}
+class GestionnaireDevoir {
+    +ajouterDevoir(nom: string, description: string, noteMaximale: number, dateDebut: string, dateFin: string, estVisible: boolean, idCours: number, idEnseignant: number): Devoir
+    +supprimerDevoir(idDevoir: number): void
+    +getListeDevoirsParIdCours(idCours: number): Devoir[]
+    +getListeDevoirsParIdEnseignant(idEnseignant: number): Devoir[]
+    +modifierDevoir(nom: string, description: string, noteMaximale: number, dateDebut: string, dateFin: string, estVisible: boolean, idDevoir: number): Devoir
+    +getDevoirParId(idDevoir: number): Devoir
+    +recupererDevoir(idDevoir: number): Devoir
+    +recupererEtudiantsNotes(idCours: number): Promise<Map<Etudiant, Note>>
+}
+class SGARouter {
+    +router: Router
+    +universite: Universite
+    +gestionnaireCours: GestionnaireCours
+    +gestionnaireQuestion: GestionnaireQuestion
+    +gestionnaireDevoir: GestionnaireDevoir
+    -getTokenFromCookie(cookie: string): string
+    +login(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +home(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +logout(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +ajouterCours(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): Promise<void>
+    +retirerCours(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +recupererListeCoursSGB(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +recupererPageListeCoursSGB(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +recupererListeCoursSGA(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +recupererPageListeCoursSGA(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +recupererDetailsCours(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +recupererPageDetailsCours(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +recupererPageQuestionsCours(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +recupererPageQuestionsEnseignant(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): Promise<void>
+    +recupererPageDevoirsEnseignant(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): Promise<void>
+    +ajouterQuestion(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +ajouterDevoir(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +supprimerQuestion(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +recupererPageDevoirsCours(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +recupererPageModifierDevoir(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +supprimerDevoir(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +recupererDetailsDevoir(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +recupererPageDetailsDevoir(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +modifierDevoir(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    -_errorCode500(error: any, req: any, res: Response<any>): void
+    +recupererPageModificationQuestion(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +modifierQuestion(req: Request<ParamsDictionary, any, any, QueryString.ParsedQs>, res: Response<any>, next: NextFunction): void
+    +init(): void
+}
+@enduml

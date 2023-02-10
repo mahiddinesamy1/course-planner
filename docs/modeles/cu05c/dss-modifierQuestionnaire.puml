@@ -1,0 +1,17 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour le scénario <i><b>Modifier questionnaire</b></i>
+actor ":Enseignant" as e
+participant ":Système" as s
+
+e->s : recupererQuestionnaire(idQuestionnaire: number, idEspaceCours: number)
+e<<--s : affiche les détails du questionnaire
+
+e->s : modifierQuestionnaire(description: string, estActif: boolean,\nidsQuestions: number[], idQuestionnaire: number, idEspaceCours: number))
+e<<--s : confirme la modification du questionnaire
+
+@enduml

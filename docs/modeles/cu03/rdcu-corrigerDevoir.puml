@@ -1,0 +1,30 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU <b>corrigerDevoir(note: number,idDevoirRemis: number, idEspaceCours: number)</b>
+participant ":GestionnaireDevoir" as gd
+participant ":Universite <sup>1</sup>" as u
+participant "espacesCours:Map<number,EspaceCours>" as mec
+participant "espaceCours:EspaceCours" as ec
+participant "devoirRemis:Map<number,DevoirRemis>" as md
+participant "devoirRemis:DevoirRemis" as d
+
+->gd : devoirRemis = corrigerDevoir(note: number,\nidDevoirRemis: number, idEspaceCours: number)
+note right : selon <b>Contrôleur</b>\n(GestionnaireDevoir est\nun controleur de session)
+
+gd -> u : espaceCours = getEspaceCoursParId(idEspaceCours)
+note right : selon <b>Expert</b> (Universite contient \ntous les espaces cours)\net <b>Transformer ID</b> (Universite\npossède une Map avec\nidEspaceCours comme clé)
+u -> mec : espaceCours = get(idEspaceCours)
+
+gd -> ec : devoirRemis = getDevoirRemisParId(idDevoirRemis)
+note right : selon <b>Expert</b> (EspaceCours\ncontient les DevoirRemis)\net <b>Transformer ID</b> (EspaceCours\npossède une Map avec\nidDevoirRemis comme clé)
+
+ec -> md : devoirRemis = get(idDevoirRemis)
+
+gd -> d : setNote(note)
+note right : selon <b>Expert</b>\n(Mutateur d'attribut:\nDevoirRemis\ncontient la note)
+
+gd -> d : setCorrige(true)
+note right : selon <b>Expert</b>\n(Mutateur d'attribut:\nDevoirRemis est\ncorrigé ou non corrigé)
+
+@enduml

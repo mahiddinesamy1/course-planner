@@ -1,0 +1,30 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour <b>modifier question</b>
+participant ":ControleurQuestion" as cq
+participant ":BDD" as bdd
+participant "modeles: Map<String, Map<number, any>>" as modeles
+participant "tableQuestion:Map<number,any>" as tableQuestion
+participant "question:Question" as question
+
+->cq : question = modifierQuestion(idQuestion, name, type,\ntags, question, textRightAnswer,\ntextWrongAnswer, answer)
+note right : selon Contrôleur\n(ControleurQuestion est\nl'objet racine)
+
+' cq -> bdd : afficherValeursQuestionASupprimer()
+' note right : Selon Expert
+
+cq -> bdd : tableQuestion = getTable("Question")
+note right : selon Expert
+
+bdd -> modeles : tableQuestion = get("Question")
+note right : selon Expert
+
+alt tableQuestion.has(idQuestion)
+    cq -> tableQuestion : question = get(idQuestion)
+        note right : selon Expert et\nTransformer ID en objets
+    cq -> question : question = set(name, type, tags, question, textRightAnswer, textWrongAnswer, answer))
+    note right : selon Expert
+end alt
+
+@enduml

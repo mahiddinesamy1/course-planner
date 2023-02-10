@@ -1,0 +1,29 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour <b>ajouterQuestionnaire(description: string, estActif: boolean, idEspaceCours: number)</b>
+participant ":GestionnaireQuestionnaire" as gq
+participant "espaceCours:\nEspaceCours" as ec
+participant ":Universite <sup>1</sup>" as u
+participant "espacesCours:\nMap<number,EspaceCours>" as mec
+participant "espaceCours:\nEspaceCours" as ec
+participant "questionnaire:\nQuestionnaire" as q
+participant "questionnaires:\nMap<number,Questionnaire>" as mq
+
+->gq : ajouterQuestionnaire(description: string,\nestActif: boolean, idEspaceCours: number)
+note right : selon <b>Controleur</b>\n(GestionnaireQuestionnaire est \nun contrôleur de session)
+
+gq -> u : espaceCours = getEspaceCoursParId(idEspaceCours)
+note right : selon <b>Expert</b> (Universite contient \ntous les espaces cours)\net <b>Transformer ID</b> (Universite\npossède une Map avec\nidEspaceCours comme clé)
+u -> mec : espaceCours = get(idEspaceCours)
+
+gq -> ec : ajouterQuestionnaire(idQuestionnaire, description, estActif, idEspaceCours)
+note right : selon <b>Expert</b> (EspaceCours contient les questionnaires)
+
+create q
+ec --> q : questionnaire = create(description,\nestActif, idEspaceCours)
+note right : selon <b>Créateur</b> (EspaceCours\ncontient des questionnaires)
+ec -> mq : set(idQuestionnaire, questionnaire)
+' note right : selon <b>Expert</b> (EspaceCours contient \nles questionnaires)
+
+@enduml

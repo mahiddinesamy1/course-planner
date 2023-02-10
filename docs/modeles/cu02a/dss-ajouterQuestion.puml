@@ -1,0 +1,20 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour le scénario <i>Ajouter question</i>
+actor ":Enseignant" as e
+participant ":Système" as s
+e->s : recupererListeCoursSGA()
+e<<--s : affiche la liste des cours de l'enseignant
+
+e ->s : getListeQuestionsParIdCours(idCours : number)
+e<<--s : retourne les questions associées au cours
+
+loop tant que l'enseignant a des questions à ajouter
+e->s : ajouterQuestion(nom: string, type: string, tags: string[],\n question: string, texteBonneReponse: string,\n texteMauvaiseReponse: string, reponse: string, \n idCours: number, idEnseignant: number)
+e<<--s : affiche les détails de la question
+end
+@enduml

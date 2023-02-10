@@ -1,0 +1,21 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour <b>CU01 - Retirer cours</b>\nScénario principal
+actor ":Enseignant" as e
+participant ":Système" as s
+e->s : recupererListeCoursSGA()
+e<<--s : affiche la liste des cours SGA de l'enseignant
+e->s : recupererCours(idCours : number)
+e<<--s : affiche les informations du cours incluant les étudiants inscrits
+
+' A voir: je trouve redondant d'avoir cette methode en back-end
+' e->s : demanderRetirerCours(token : String, idCours : String)
+' e<<--s : demande une confirmation pour supprimer le cours
+
+e->s : retirerCours(idCours : number)
+e<<--s : supprime le cours et affiche la nouvelle liste de cours de l'enseignant
+@enduml

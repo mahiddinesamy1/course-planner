@@ -1,0 +1,29 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour obtenir les cours SGB qu'enseigne l'enseignant :\n<b>recupererListeCoursSGB</b>
+
+participant ":ControleurCours" as ctrlCours
+participant ":BDD" as bdd
+participant "modeles: Map<String, Map<number, any>>" as modeles
+participant "listeCours:any[]" as listeCours
+
+->ctrlCours : listeCours = recupererListeCoursSGB()
+note right : selon Contrôleur\n(GestionnaireCours est\n  un controlleur de session)
+
+ctrlCours -> bdd : tableCoursSGB = getTable("coursSGB")
+note right : selon Expert
+
+bdd -> modeles : tableCoursSGB = get("coursSGB")
+note right : selon Expert
+
+create listeCours
+ctrlCours -->> listeCours : listeCours = create
+note right : selon Créateur\n(GestionnaireCours utilise\nétroitement listeCours)
+
+loop cours in tableCoursSGB
+ ctrlCours -> listeCours : push(cours)
+ note right : selon Expert (Ajouter les cours du tableau)
+end loop
+
+@enduml

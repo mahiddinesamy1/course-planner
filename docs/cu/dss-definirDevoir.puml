@@ -1,0 +1,15 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour <b>CU02b - Définir un devoir dans un cours</b>\nScénario secondaire
+actor ":Enseignant" as e
+participant ":Système" as s
+e->s : ajouterDevoir(fréquence, dateDébut, dateFin)
+s-->>e : ajoute le devoir au cours et affiche l'informaiton
+@enduml
+
+
+

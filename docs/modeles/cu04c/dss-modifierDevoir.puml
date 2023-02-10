@@ -1,0 +1,18 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour le scénario <i>Modifier Devoir</i>
+actor ":Enseignant" as e
+participant ":Système" as s
+
+e->s : getListeDevoirsParIdEnseignant(idEnseignant : number)
+e<<--s : affiche la liste des devoirs de l'enseignant
+e->s : getDevoirParId(idDevoir: number)
+e<<--s : affiche les valeurs actuelles du devoir à modifier
+e ->s : modifierDevoir(nom: string, description: string, noteMaximale: number, \n dateDebut: string, dateFin: string, estVisible: boolean, idEspaceCours: number)
+e<<--s : affiche tout le devoir modifié
+
+@enduml

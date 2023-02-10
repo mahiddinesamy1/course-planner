@@ -1,0 +1,34 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour récupérer la liste des questions de l'enseignant
+participant ":ControleurQuestion" as c
+participant ":BDD" as bdd
+participant "modeles: Map<String, Map<number, any>>" as modeles
+participant "listeQuestions:any[]" as listeQuestions
+
+->c : listeQuestion = getListeQuestionsParIdEnseignant(idEnseignant)
+note right : selon Contrôleur\n(ControleurQuestion est l'objet racine)
+
+c -> bdd : tableQuestion = getTable("Question")
+note right : selon Expert
+
+bdd -> modeles : tableQuestion = get("Question")
+note right : selon Expert
+
+create listeQuestions
+c --> listeQuestions : listeQuestions = create
+note right : selon Créateur\n(ControleurQuestion utilise\nétroitement listeQuestions)
+
+loop question in tableQuestion
+    c -> bdd : idEnseignantActuel = getIdEnseignantActuel()
+    note right : selon Expert
+
+ alt question.idEnseignant == idEnseignantActuel
+    c -> listeQuestions : push(question)
+    note right : selon Expert (Ajouter les questions du tableau)
+
+ end alt
+end loop
+
+@enduml

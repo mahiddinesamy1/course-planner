@@ -1,0 +1,17 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour modifier un devoir
+participant ":GestionnaireDevoir" as gd
+participant "objDevoir:Devoir" as d
+
+->gd : objDevoir =  modifierDevoir(nom, description, noteMaximale, \n dateDebut, dateFin, estVisible, idEspaceCours)
+note right : selon Controleur (GestionnaireDevoir est \nun contrôleur de session)
+
+gd --> d : rechercher("idEspaceCours",idEspaceCours)
+note right : selon Expert (EspaceCours\ncontient les devoirs)\net Transformer ID
+
+gd -> d : sauvegarder(idDevoir)
+note right : selon Expert
+
+@enduml

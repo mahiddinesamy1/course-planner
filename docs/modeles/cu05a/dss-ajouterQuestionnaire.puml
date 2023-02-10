@@ -1,0 +1,20 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour le scénario <i><b>Ajouter questionnaire</b></i>
+actor ":Enseignant" as e
+participant ":Système" as s
+e->s : recupererListeEspaceCoursEnseignant()
+e<<--s : affiche la liste des espaces cours de l'enseignant et le nombre de questionnaires associés
+
+e->s : ajouterQuestionnaire(description: string, estActif: boolean, idEspaceCours: number)
+e<<--s : affiche les questionnaires associés à l'espace cours
+
+loop tant que l'enseignant a des questions à ajouter à un questionnaire
+e->s : ajouterQuestionsAuQuestionnaire(idsQuestions: number[], idQuestionnaire: number, idEspaceCours: number)
+e<<--s : affiche les questions associés à l'espace cours
+end 
+@enduml

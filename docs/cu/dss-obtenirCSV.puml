@@ -1,0 +1,12 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour <b>CU03 - Obtenir CSV représentant un cours</b>\nScénario principal
+actor ":Enseignant" as e
+participant ":Système" as s
+e->s : obtenirCSV()
+s-->>e : ouvre une boite de dialogue demandant où sauvegarder le CSV
+@enduml

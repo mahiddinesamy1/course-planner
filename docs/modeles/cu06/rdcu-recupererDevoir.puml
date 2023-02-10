@@ -1,0 +1,24 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour <b>recupererDevoir(idDevoir: number, idEspaceCours: number)</b>
+participant ":GestionnaireDevoir" as gd
+participant ":Universite <sup>1</sup>" as u
+participant "espacesCours:Map<number, EspaceCours>" as mec
+participant "espaceCours:EspaceCours" as ec
+participant "devoirs:Map<number, Devoir>" as md
+
+->gd : devoir = recupererDevoir(idDevoir: number,\nidEspaceCours: number)
+note right : selon <b>Contrôleur</b>\n(GestionnaireDevoir est\nun controleur de session)
+
+gd -> u : espaceCours = getEspaceCoursParId(idEspaceCours)
+note right : selon <b>Expert</b> (Universite\ncontient les espaces cours)\net <b>Transformer ID</b> (Universite\npossède une Map avec\nidEspaceCours comme clé)
+
+u -> mec : espaceCours = get(idEspaceCours)
+
+gd -> ec : devoir = getDevoirParId(idDevoir)
+note right : selon <b>Expert</b> (Espace cours\ncontient les devoirs) et\n<b>Transformer ID</b> (EspaceCours\npossède une Map avec\nidDevoir comme clé)
+
+ec -> md : devoir = get(idDevoir)
+
+@enduml

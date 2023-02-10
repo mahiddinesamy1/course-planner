@@ -1,0 +1,18 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour le scénario <i><b>Supprimer questionnaire</b></i>
+actor ":Enseignant" as e
+participant ":Système" as s
+
+
+e->s : recupererQuestionnaire(idQuestionnaire: number, idEspaceCours: number)
+e<<--s : affiche les détails du questionnaire
+
+e->s : supprimerQuestionnaire(idQuestionnaire: number, idEspaceCours: number)
+e<<--s : confirme la suppression du questionnaire
+
+@enduml

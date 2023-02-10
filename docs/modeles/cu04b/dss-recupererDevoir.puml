@@ -1,0 +1,18 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour le scénario <i>Récupérer devoir</i>
+actor ":Enseignant" as e
+participant ":Système" as s
+e->s : recupererListeCoursSGA()
+e<<--s : affiche la liste des espaces cours de l'enseignant
+e ->s : getListeDevoirsParIdCours(idEspaceCours : number)
+e<<--s : retourne les devoirs associés au cours
+e->s : recupererDevoir(idDevoir : number)
+e<<--s : affiche les détails associés au devoir
+e->s : recupererEtudiantsNotes(idEspaceCours: number)
+e<<--s : affiche les notes associées aux étudiants 
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+title RDCU pour <b>supprimer Devoir</b>
+participant ":GestionnaireDevoir" as gd
+participant "objetDevoir:Devoir" as Dev
+participant "espaceCours:EspaceCours" as ec
+
+
+->gd : supprimerDevoir(idDevoir)
+note right : selon Contrôleur\n(GestionnaireDevoir et\n un controleur de session)
+
+' cq -> bdd : afficherValeursQuestionASupprimer()
+' note right : Selon Expert
+
+gd -> Dev : rechercher("idDevoir", idDevoir)
+note right : selon Expert et Transformer ID
+
+alt tableDevoir.has(objetDevoir)
+    gd -> Dev : supprimer(idDevoir)
+    note right : selon Expert
+end alt
+
+gd --> ec : rechercher("idEspaceCours",idEspaceCours)
+note right : selon Expert (EspaceCours\ncontient les devoirs)
+
+gd --> ec : reduireCptDevoirs()
+note right : selon Expert (EspaceCours\ncontient le nombre de devoirs)
+@enduml

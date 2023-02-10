@@ -1,0 +1,22 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour le scénario <i><b>Remettre devoir</b></i>
+actor ":Etudiant" as e
+participant ":Système" as s
+
+e->s : recupererListeEspaceCoursEtudiant()
+e<--s : affiche la liste des espaces cours de l'étudiant
+
+e->s : recupererEspaceCours(idEspaceCours: number)
+e<--s : affiche les devoirs pour l'espace cours sélectionné par l'étudiant
+
+e->s : recupererDevoir(idDevoir: number, idEspaceCours: number)
+e<--s : affiche les détails du devoir sélectionné par l'étudiant
+
+e->s : remettreDevoir(nom: string, description: string, dateDebut: string,\ndateFin: string, idEspaceCours: number, idEtudiant: number, idDevoir: number)
+e<--s : affiche un message qui confirme la remise du devoir par l'étudiant
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+skinparam style strictuml
+skinparam defaultfontname Verdana
+skinparam sequence {
+    MessageAlign center
+}
+title DSS pour le scénario <i>Modifier question</i>
+actor ":Enseignant" as e
+participant ":Système" as s
+e->s : recupererDetailsQuestion(idQuestion : number)
+e<<--s : affiche les valeurs actuelles de la question à supprimer
+
+e->s : modifierQuestion(idQuestion : number, name: string, type: string, tags: string[],\n question: string, textRightAnswer: string,\n textWrongAnswer: string, answer: string)
+e<<--s : modifie la question et affiche la nouvelle liste de question
+@enduml
