@@ -1,129 +1,51 @@
 # Plan d'itération 2
 
-
-## Étapes jalons
-
-| Étape jalon          | Date       |
-| :------------------- | :--------- |
-| Début de l'itération | 2023/01/24 |
-| Rapport préliminaire | 2020/10/09 |
-| Fin de l'itération   | 2023/02/06 |
+| Cible d'évaluation | Itération 2 |
+| --- | --- |
+| Date d'évaluation | 10 février 2023 |
+| Participants | **Auteurs** : <br /> Nicolas Plourde <br /> Philippe Lepage <br /> Amokrane Smail <br /> Samy Mahiddine <br /> **Professeurs superviseur** : <br /> Christopher Fuhrman <br /> Ali Ouni |
+| État du projet | En cours |
 
 ## Objectifs clés
 
-
-- Concevoir l'interface du prototype 1 (JS ou Angular)
-- Concevoir l'interface du prototype 2 (Python)
-- Présenter une démonstration technique des CU01 et CU02 (avec tests)
-- Analyser la viabilité des deux solutions 
+1. Concevoir l'interface du prototype Vercel;
+2. Concevoir l'interface du prototype exécutable Python;
+3. Présenter une démonstration technique du CU01 dans les deux prototypes;
+4. Analyser la viabilité des deux solutions;
+5. Choisir une solution avec le client.
 
 ## Identification des risques
 
-- 
-- 
-
+| **Risque** | **Impact** | **Prob.** | **Mitigation / atténuation** |
+| --- | --- | --- | --- |
+| Problèmes de compatibilité technique | Le prototype exécutable Python peut ne pas être compatible avec les systèmes et les environnements requis, ce qui peut entraîner des problèmes de fonctionnement. | Moyen | S'assurer de tester l'exécutable Python sur les différents OS et version afin de détecter et régler les problèmes liés à la compatibilité. |
+| Délais non respectés | Le développement des deux prototypes pourrait prendre plus de temps que prévu, ce qui pourrait entraîner un retard dans la présentation de la démonstration technique. | Faible | Établir des échéanciers précis pour chaque tâche et répartir les tâches convenablement au sein de l'équipe. |
+| Incompatibilité d'une application web sans serveur et des fonctionnalités désirées | Empêcherait le prototypage d'une telle application et la viabilité d'une solution utilisant cette technologie. | Moyen | Rechercher des façons de faire alternative pour contourner les limitations d'une application sans serveur. |
+| Les solutions proposées ne conviennent pas au client. | Le travail effectué sur les deux prototypes est perdu et une autre solution doit être explorée. | Faible | Faire un suivi du progrès avec le client afin de s'assurer que les fonctionnalités développées lui conviennent. |
 
 ## Affectations d'éléments de travail
 
-
 Les éléments de travail suivants seront abordés dans cette itération:
- 
-| Nom / Description                | Priorité | [Taille estimée (points)](#commentEstimer "Comment estimer?") | Assigné à (nom) | Documents de référence |
-| ---------------------------------| -------: | --------------------------: | --------------- | ---------------------- |
-| Interface prototype executable 1 | 1        | 2  | Amokrane T et Nicolas  | Channel #décision-implémentation  |
-| Interface prototype web 2        | 1        | 2  | Philippe et Samy       | Channel #décision-implémentation  |
-| CU01 pour prototype executable 1 | 2        | 2  | Amokrane T et Nicolas  | dss-obtenirHoraire  |
-| CU01 pour prototype web  2       | 2        | 2  | Philippe et Samy       | dss-obtenirHoraire |
 
-
-## Problèmes
-
-| Problèmes                                                                                            | Statut | Notes |
-| ---------------------------------------------------------------------------------------------------- | ------ | ----- |
-| La familiarisation avec JavaScript et les outils technologiques (Node, Express et Pug)                                                |Ouvert| 10    | 
-| Génération des fichiers backups de type mbz       | Ouvert| 10 | 
-|Déterminer l'horaire d'une activité selon les jours et les heures| Ouvert  |10
+| Nom / Description | Priorité | [Taille estimée (points)](#commentEstimer) | Assigné à (nom) | Documents de référence |
+| --- | --- | --- | --- | --- |
+| Interface prototype exécutable | 1 | 1 | Amokrane et Nicolas | Channel #décision-implémentation |
+| Interface prototype Vercel | 1 | 1 | Philippe et Samy | Channel #décision-implémentation |
+| CU01 pour prototype exécutable | 1 | 1.5 | Amokrane et Nicolas | dss-obtenirHoraire |
+| CU01 pour prototype Vercel | 2 | 1.5 | Philippe et Samy | dss-obtenirHoraire |
 
 ## Critères d'évaluation
 
+- Les deux prototypes sont fonctionnels;
+- Le CU1, obtenir un horaire de cours à partir des ressources de l'ÉTS est fonctionnel pour les deux prototypes.
 
-- Lancement de l'interface utilisateur selon les les deux prototypes.
+# Affiner la définition et la portée du projet
+#
 
-- Démonstration des fonctionnalités CU01 et CU02 pas à pas avec le Professeurs superviseur et ayant obtenue une réponse favorable.
+La dernière itération nous a appris que la technologie d'extension du fureteur est incompatible avec les fonctionnalités désirées pour le prototype. Le problème venait du fait qu'il fallait encapsuler des librairies serveur pour supporter les fonctionnalités du _activity-connector_ et que celles-ci ne peuvent pas s'exécuter dans un navigateur.
 
-## Évaluation de l'itération
+C'est pour cette raison que durant cette itération nous développerons deux prototypes alternatifs que nous présenterons au client. Le premier prototype aura un code source en python et sera transformé en un exécutable que le client pourra utiliser. Le deuxième prototype sera une page statique hébergé sur vercel. Cette page n'aura pas d'application serveur et utilisera le stockage local du navigateur des enseignants.
 
+# Remarques
 
-| Cible d'évaluation | Itération 2        |
-| ------------------ | ---------------- |
-| Date d'évaluation  | 2 Février  2023                                                                                                          |
-| Participants       | **Auteurs** :<br> Nicolas Plourde <br> Philippe Lepage <br> Amokrane Smail <br> Samy Mahiddine <br> Nadia Medkour <br><br> **Professeurs superviseur** :<br> Christopher Fuhrman <br> Ali Ouni                                                                 |
-| État du projet     | <!-- *Rouge, Orange, ou Vert.* -->                                                                                         |
-
-###  Évaluation par rapport aux objectifs
-
--   Concevoir l'interface du prototype 1
-    >Aucun des membres de l'équipes n'a eu de problème avec l'installation de VSC et ses pluggins associés tels que plantuml 
-    
--   Concevoir l'interface du prototype 2
-    > Les CU01a et CU01b étaient fonctionnelles et toute la documentation était réalisée. Le chargé nous a donné des amélioration à faire dans l'écriture de nos DSS, MDD et RDCU
-
--   Présenter une démonstration technique des CU01 et CU02 (avec tests).
-    > Les fonctionnalités générales pour le CU01 et le CU02 répondaient suffisament aux exigences de l'énoncé. Toutefois, une séparation entre la couche api et la couche interface doit être mieux implémentée. Les noms de toutes les routes devraient aussi correspondre aux opérations systèmes du controleur. ET Finalement, les tests devraient s'assurer de vérifier seulement des contenus de JSON et non du contenu HTML.
-
-
-### Éléments de travail: prévus vs réalisés
-
-Tous les éléments ont été complétés, mais il faut étoffer améliorer la séparation des couches api et interface, il faut améliorer les tests, et s'assurer du bon respect des nom de routes/opérations. Et il faut aussi modifier l'ajout de mots clés dans les questions pour accepter plusieurs string.
-
-> Améliorer les tests assigné à christophe Rivard
-> Renommer les noms de méthodes assigné à Christophe Tremblay
-> Revisiter l'ajout de mots clés dans les questions assigné à Christophe Tremblay
-> Améliorer la séparation entre les couches assignés à Christophe Tremblay
-
-### Évaluation par rapport aux résultats selon les critères d'évaluation 
-
-- La solution a répondu à la majortié des critères, toutefois certaines opérations systèmes n'étaient pas testées.
-- La démo de l'itération 1 s'est bien passée, avec quelques points soulevés qui sont à changer durant la prochaine itération.
-- Génération de testes unitaires qui offre une couverture du code de 80 % minimalement 
-
-## Autres préoccupations et écarts
-
-Nous devons trouver un autre moyen de bien séparer les routes pour le api et pour l'interface
-
-## Évaluation du travail d'équipe
-
-### Rapports de Git Inspector
-
-#### Implémentation
-
-> Insérez le tableau des résultats produits par le script
-
-#### Analyse et conception
-
-> Insérez le tableau des résultats produits par le script
-
-#### Tests
-
-> Insérez le tableau des résultats produits par le script
-
-### Retour sur l'itération
-
-
-#### Êtes-vous satisfaits de la contribution de chaque membre de l’équipe? Expliquez.
-Oui, nous avons opté pour une approche en programmation de groupe avec l'extention LiveShare de VSCode. Celle-ci nous a permit de se familiariser avec l'environment de TypeScript ainsi que mettre en application nos décisions prises lors du développement de façon rapide et efficace.
-#### Quelles solutions pouvez-vous mettre en place pour amener les membres de l’équipe à contribuer de façon satisfaisante?
-Nous utiliserons l'outil de ticket de GitHub, ce qui permettera à l'équipe de répartir les tâches de façon équilibrée.
-#### Êtes-vous satisfaits de la communication dans l’équipe? Expliquez.
-Oui, nous avons créé un serveur Discord pour notre équipe. Lorsqu'on avançait dans le projet on en discutait ensemble avant de merge avec la branche principale. De plus, quand on avait des problème au niveau du codage (bugs) ou de la documentation, on n'hésitait pas à demander de l'aide aux coéquipiers via Discord. 
-#### Quelles solutions pouvez-vous mettre en place pour améliorer la communication dans l'équipe?
-Nous avons mis en place un tableau de bords de type Kanban qui nous permet de trier, assigner et savoir ou est rendu le projet.
-
----
-
-<a name="commentPlanifier">Comment planifier une itération selon le
-    processus unifié :</a>
-    <https://docs.google.com/a/etsmtl.net/document/d/1xeCCdR4-sTznTPaSKYIl4l_bQi-gE5stPWSA5VArRlY/edit?usp=sharing>
-
-<a name="commentEstimer">Comment estimer la taille :</a>
-    <https://docs.google.com/a/etsmtl.net/document/d/1bDy0chpWQbK9bZ82zdsBweuAgNYni3T2k79xihr6CuU/edit?usp=sharing>
+Étant donné que l'objectif de cette itération est plus de proposer des solutions potentielles que de développer des fonctionnalités et de la logique, aucun test automatisé ne fut fait sur le code présenté. Une série de tests sera développée pour chaque fonctionnalité supplémentaire sur la solution sélectionnée lors de la démonstration.
