@@ -13,8 +13,7 @@ const FilePicker: React.FC<Props> = () => {
     if (event.target.files != null) {
         notifyFileSubmited(event.target.files[0]);
     }
-    
-};
+    };
 
   return (
     <div>

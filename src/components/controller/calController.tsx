@@ -32,9 +32,14 @@ export const CalController: React.FC<CalControllerProps> = ({children}) => {
         setEvents([]);
     }
 
-    const notifyFileSubmited = (file: File) => {
-        parseActivities(file);
-    };
+    const notifyFileSubmited = async (file: File) => {
+        console.log("start")
+        const mbzEvents = await parseActivities(file);
+        console.log("end")
+        console.log(mbzEvents)
+        setEvents(currentEvents => [...currentEvents, ...mbzEvents]);
+
+    }
 
     return (
         <CalControllerContext.Provider value={{notifyCourseFormSubmit, notifyClearCal, notifyFileSubmited}}>
