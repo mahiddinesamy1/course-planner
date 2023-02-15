@@ -57,27 +57,24 @@ export const parseActivities = async (file:File):Promise<CalEvent[]> => {
             const fileArrayBuffer = await fileToArrayBuffer(file);
             const unzip = Pako.ungzip(fileArrayBuffer);
             // @ts-ignore
-            import('js-untar').then(async (module) => { // dynamic import because importing the module on the server-side will result in a exception becasue the module is looking for the window attribute
-                const untar = module.default;
+            const module = await import('js-untar') // dynamic import because importing the module on the server-side will result in a exception becasue the module is looking for the window attribute
+            const untar = module.default;
 
-                const extractedFiles = await untar(unzip.buffer)
-                const activityPaths: string[] = getActivtyPaths(extractedFiles);
-                
-                for (let extractedFile of extractedFiles) {
-                    
-                    if (activityPaths.includes(extractedFile.name)) {
-                        let activtiyAsJSON = xmlParser.parse(Buffer.from(extractedFile.buffer))["activity"]
-                        let type = activtiyAsJSON["@_modulename"];
-                        let id = activtiyAsJSON["@_id"];
-                        let mappingFcn = mbzActivtiyToCal[type];
-                        calEvents.push(mappingFcn(activtiyAsJSON[type], id));
-                    }
-                }
-            })
+            const extractedFiles = await untar(unzip.buffer)
+            const activityPaths: string[] = getActivtyPaths(extractedFiles);
             
+            for (let extractedFile of extractedFiles) {
+                
+                if (activityPaths.includes(extractedFile.name)) {
+                    let activtiyAsJSON = xmlParser.parse(Buffer.from(extractedFile.buffer))["activity"]
+                    let type = activtiyAsJSON["@_modulename"];
+                    let id = activtiyAsJSON["@_id"];
+                    let mappingFcn = mbzActivtiyToCal[type];
+                    calEvents.push(mappingFcn(activtiyAsJSON[type], id));
+                }
+            }
         }
         return calEvents;
-        
 };
 
 function getActivtyPaths(untarFiles: UntarFile[]):string[] {

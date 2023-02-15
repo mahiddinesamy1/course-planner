@@ -33,12 +33,8 @@ export const CalController: React.FC<CalControllerProps> = ({children}) => {
     }
 
     const notifyFileSubmited = async (file: File) => {
-        console.log("start")
         const mbzEvents = await parseActivities(file);
-        console.log("end")
-        console.log(mbzEvents)
         setEvents(currentEvents => [...currentEvents, ...mbzEvents]);
-
     }
 
     return (
