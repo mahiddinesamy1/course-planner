@@ -1,5 +1,4 @@
-// @ts-ignore
-import * as Pako from 'pako';
+import {decompressSync} from 'fflate';
 // @ts-ignore
 import XMLParser from 'fast-xml-parser';
 import { CalEvent, CalEventType } from '@/components/model/calEvent';
@@ -54,8 +53,8 @@ const mbzActivtiyToCal: {[key: string]: (obj:any, id:string)=>CalEvent } = {
 export const parseActivities = async (file:File):Promise<CalEvent[]> => {
         const calEvents:CalEvent[] = [];
         if (typeof window !== 'undefined') {
-            const fileArrayBuffer = await fileToArrayBuffer(file);
-            const unzip = Pako.ungzip(fileArrayBuffer);
+            const fileArrayBuffer = await readFileAsUint8Array(file);
+            const unzip = decompressSync(fileArrayBuffer);
             // @ts-ignore
             const module = await import('js-untar') // dynamic import because importing the module on the server-side will result in a exception becasue the module is looking for the window attribute
             const untar = module.default;
@@ -98,11 +97,13 @@ function makeMBZpath(jsonActivity: any, type: string) {
     return jsonActivity["directory"] + "/" + type + ".xml"; 
 }
 
-function fileToArrayBuffer(file: File) {
+function readFileAsUint8Array(file: File): Promise<Uint8Array> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
-        resolve(reader.result);
+        const arrayBuffer = reader.result as ArrayBuffer;
+        const uint8Array = new Uint8Array(arrayBuffer);
+        resolve(uint8Array);
       };
       reader.onerror = reject;
       reader.readAsArrayBuffer(file);
