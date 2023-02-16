@@ -1,9 +1,10 @@
-import React, {PropsWithChildren, useContext, createContext} from 'react';
+import React, {useState, useContext, createContext} from 'react';
 import {CalEvent} from '@/components/model/calEvent'
 import fetchCourseICAL from './util/fetchCourseICAL'
 import {mapICALtoEvent} from './util/calEventOperations';
 import { CalModelContext } from '@/components/model/calModel';
-import { parseActivities } from './util/mbzInterpreter';
+import { extractData, parseActivities } from './util/mbzInterpreter';
+import { ArchiveFile } from '../model/archiveFile';
 
 type CalControllerContextProps = {
     notifyCourseFormSubmit : (code: string, group: number, year: number, semester:number) => void;
@@ -19,13 +20,13 @@ type CalControllerProps = {
 
 export const CalController: React.FC<CalControllerProps> = ({children}) => {
     const {events, setEvents} = useContext(CalModelContext);
-
+    
     const notifyCourseFormSubmit = async (code: string, group: number, year: number, semester:number) => {
         const textData = await fetchCourseICAL(code, group, year, semester);
 
         const newEvents = mapICALtoEvent(textData);
         const filteredEvents = newEvents.filter((event: CalEvent) => !events.find((newEvent: CalEvent) => newEvent.uid === event.uid));
-        setEvents([...filteredEvents, ...events]);
+        setEvents(currentEvents => [...currentEvents, ...filteredEvents]);
     }
 
     const notifyClearCal = () => {
@@ -33,7 +34,8 @@ export const CalController: React.FC<CalControllerProps> = ({children}) => {
     }
 
     const notifyFileSubmited = async (file: File) => {
-        const mbzEvents = await parseActivities(file);
+        const fileData = await extractData(file);
+        const mbzEvents = await parseActivities(fileData);
         setEvents(currentEvents => [...currentEvents, ...mbzEvents]);
     }
 

@@ -2,17 +2,7 @@ import {decompressSync} from 'fflate';
 // @ts-ignore
 import XMLParser from 'fast-xml-parser';
 import { CalEvent, CalEventType } from '@/components/model/calEvent';
-interface UntarFile {
-    buffer : ArrayBuffer,
-    type : string,
-    name : string,
-    namePrefix : string,
-    uname : string,
-    uid: number,
-    ustarFromat: string,
-    version : string,
-    checksum : number
-}
+import { ArchiveFile } from '@/components/model/archiveFile';
 
 const options = {
     ignoreAttributes : false
@@ -50,33 +40,37 @@ const mbzActivtiyToCal: {[key: string]: (obj:any, id:string)=>CalEvent } = {
     "assign": parseMBZHomework
 };
 
-export const parseActivities = async (file:File):Promise<CalEvent[]> => {
-        const calEvents:CalEvent[] = [];
-        if (typeof window !== 'undefined') {
-            const fileArrayBuffer = await readFileAsUint8Array(file);
-            const unzip = decompressSync(fileArrayBuffer);
-            // @ts-ignore
-            const module = await import('js-untar') // dynamic import because importing the module on the server-side will result in a exception becasue the module is looking for the window attribute
-            const untar = module.default;
+export const extractData = async (file:File): Promise<ArchiveFile[]> => {
 
-            const extractedFiles = await untar(unzip.buffer)
-            const activityPaths: string[] = getActivtyPaths(extractedFiles);
+    const fileArrayBuffer = await readFileAsUint8Array(file);
+    const unzip = decompressSync(fileArrayBuffer);
+    // @ts-ignore
+    const module = await import('js-untar'); // dynamic import because importing the module on the server-side will result in a exception becasue the module is looking for the window attribute
+    const untar = module.default;
+
+    return await untar(unzip.buffer);
+    
+}
+
+export const parseActivities = async (data:ArchiveFile[]):Promise<CalEvent[]> => {
+        const calEvents:CalEvent[] = [];
+        const activityPaths: string[] = getActivtyPaths(data);
+        
+        for (let extractedFile of data) {
             
-            for (let extractedFile of extractedFiles) {
-                
-                if (activityPaths.includes(extractedFile.name)) {
-                    let activtiyAsJSON = xmlParser.parse(Buffer.from(extractedFile.buffer))["activity"]
-                    let type = activtiyAsJSON["@_modulename"];
-                    let id = activtiyAsJSON["@_id"];
-                    let mappingFcn = mbzActivtiyToCal[type];
-                    calEvents.push(mappingFcn(activtiyAsJSON[type], id));
-                }
+            if (activityPaths.includes(extractedFile.name)) {
+                let activtiyAsJSON = xmlParser.parse(Buffer.from(extractedFile.buffer))["activity"]
+                let type = activtiyAsJSON["@_modulename"];
+                let id = activtiyAsJSON["@_id"];
+                let mappingFcn = mbzActivtiyToCal[type];
+                calEvents.push(mappingFcn(activtiyAsJSON[type], id));
             }
         }
+        
         return calEvents;
 };
 
-function getActivtyPaths(untarFiles: UntarFile[]):string[] {
+function getActivtyPaths(untarFiles: ArchiveFile[]):string[] {
     const mainFile = untarFiles.find((file) => file.name=== "moodle_backup.xml");
     if (mainFile === undefined) {
         throw new Error("No moodle_backup.xml file in provided tar. Make sure to upload a moodle backup file.");
