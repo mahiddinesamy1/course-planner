@@ -4,12 +4,7 @@ import XMLParser from 'fast-xml-parser';
 import { CalEvent, CalEventType } from '@/components/model/calEvent';
 import { ArchiveFile } from '@/components/model/archiveFile';
 
-const options = {
-    ignoreAttributes : false
 
-};
-
-const xmlParser = new XMLParser.XMLParser(options);
 
 function mbzDateToJS(mbzDate : string): Date{
     return new Date(parseInt(mbzDate, 10) * 1000);
@@ -36,11 +31,11 @@ const mbzActivtiyToCal: {[key: string]: (obj:any, id:string)=>CalEvent } = {
     "assign": parseMBZHomework
 };
 
-export const zipData = (data:ArchiveFile[]): Uint8Array => {
+export const zipData = (data:{[key:string]:ArchiveFile}): Uint8Array => {
 
   const pathToData: Zippable = {};
-  for (let file of data) {
-    pathToData[file.name] = new Uint8Array(file.buffer);
+  for (let path in data) {
+    pathToData[path] = new Uint8Array(data[path].buffer);
   }
 
   const serialized = zipSync(pathToData);
@@ -48,7 +43,7 @@ export const zipData = (data:ArchiveFile[]): Uint8Array => {
   return serialized;
 }
 
-export const extractData = async (file:File): Promise<ArchiveFile[]> => {
+export const extractData = async (file:File): Promise<{[key:string]:ArchiveFile}> => {
 
     const fileArrayBuffer = await readFileAsUint8Array(file);
     const unzip = decompressSync(fileArrayBuffer);
@@ -56,30 +51,41 @@ export const extractData = async (file:File): Promise<ArchiveFile[]> => {
     const module = await import('js-untar'); // dynamic import because importing the module on the server-side will result in a exception becasue the module is looking for the window attribute
     const untar = module.default;
 
-    return await untar(unzip.buffer);
+    const data:ArchiveFile[] = await untar(unzip.buffer);
+    const pathToFile: {[key:string]:ArchiveFile} = {}
+    for (let file of data) {
+        pathToFile[file.name] = file;
+    }
+
+    return pathToFile;
     
 }
 
-export const parseActivities = async (data:ArchiveFile[]):Promise<CalEvent[]> => {
+
+const options = {
+    ignoreAttributes : false
+
+};
+const xmlParser = new XMLParser.XMLParser(options);
+
+export const parseActivities = async (data:{[key:string]:ArchiveFile}):Promise<CalEvent[]> => {
         const calEvents:CalEvent[] = [];
         const activityPaths: string[] = getActivtyPaths(data);
         
-        for (let extractedFile of data) {
-            
-            if (activityPaths.includes(extractedFile.name)) {
-                let activtiyAsJSON = xmlParser.parse(Buffer.from(extractedFile.buffer))["activity"]
-                let type = activtiyAsJSON["@_modulename"];
-                let id = activtiyAsJSON["@_id"];
-                let mappingFcn = mbzActivtiyToCal[type];
-                calEvents.push(mappingFcn(activtiyAsJSON[type], id));
-            }
+        for (let activityPath of activityPaths) {
+            let activityFile = data[activityPath];
+            let activtiyAsJSON = xmlParser.parse(Buffer.from(activityFile.buffer))["activity"]
+            let type = activtiyAsJSON["@_modulename"];
+            let id = activtiyAsJSON["@_id"];
+            let mappingFcn = mbzActivtiyToCal[type];
+            calEvents.push(mappingFcn(activtiyAsJSON[type], id));
         }
         
         return calEvents;
 };
 
-function getActivtyPaths(untarFiles: ArchiveFile[]):string[] {
-    const mainFile = untarFiles.find((file) => file.name=== "moodle_backup.xml");
+function getActivtyPaths(data: {[key:string]:ArchiveFile}):string[] {
+    const mainFile = data["moodle_backup.xml"];
     if (mainFile === undefined) {
         throw new Error("No moodle_backup.xml file in provided tar. Make sure to upload a moodle backup file.");
     }

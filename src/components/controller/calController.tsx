@@ -9,7 +9,7 @@ import { ArchiveFile } from '../model/archiveFile';
 type CalControllerContextProps = {
     notifyCourseFormSubmit : (code: string, group: number, year: number, semester:number) => void;
     notifyClearCal : () => void;
-    notifyFileSubmited : (file: File) => void;
+    notifyMBZSubmited : (file: File) => void;
     notifyMBZDownload : (oldURL: string) => string;
 }
 
@@ -21,7 +21,7 @@ type CalControllerProps = {
 
 export const CalController: React.FC<CalControllerProps> = ({children}) => {
     const {events, setEvents} = useContext(CalModelContext);
-    const [mbzData, setMVZData] = useState<ArchiveFile[]>([]);
+    const [mbzData, setMVZData] = useState<{[key:string]:ArchiveFile}>({});
     
     
     const notifyCourseFormSubmit = async (code: string, group: number, year: number, semester:number) => {
@@ -36,7 +36,7 @@ export const CalController: React.FC<CalControllerProps> = ({children}) => {
         setEvents([]);
     }
 
-    const notifyFileSubmited = async (file: File) => {
+    const notifyMBZSubmited = async (file: File) => {
         const fileData = await extractData(file);
         setMVZData(fileData);
         const mbzEvents = await parseActivities(fileData);
@@ -50,7 +50,7 @@ export const CalController: React.FC<CalControllerProps> = ({children}) => {
     }
 
     return (
-        <CalControllerContext.Provider value={{notifyCourseFormSubmit, notifyClearCal, notifyFileSubmited, notifyMBZDownload}}>
+        <CalControllerContext.Provider value={{notifyCourseFormSubmit, notifyClearCal, notifyMBZSubmited, notifyMBZDownload}}>
             {children}
         </CalControllerContext.Provider>
     );
