@@ -19,9 +19,7 @@ function parseMBZQuiz(obj:any, id:string): CalEvent {
     return {start: mbzDateToJS(obj["timeopen"]),
             end: mbzDateToJS(obj["timeclose"]),
             title: obj["name"],
-            description: "",
             type: CalEventType.Evaluation,
-            location: "",
             uid: id};
 }
 
@@ -29,9 +27,7 @@ function parseMBZHomework(obj:any, id:string): CalEvent {
     return {start: mbzDateToJS(obj["allowsubmissionsfromdate"]),
             end: mbzDateToJS(obj["duedate"]),
             title: obj["name"],
-            description: "",
             type: CalEventType.Homework,
-            location: "",
             uid: id};
 }
 
