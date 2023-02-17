@@ -2,9 +2,9 @@ import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
 import EventCalendar from '@/components/view/eventCalendar'
 import CourseInformationForm from '@/components/view/courseInformationForm'
-import {CalController} from '@/components/controller/calController'
+import {EventController} from '@/components/controller/eventController'
 import ClearCalButton from '@/components/view/clearCalButton'
-import {CalModel} from '@/components/model/calModel'
+import {EventModel} from '@/components/model/eventModel'
 import FilePickerMBZ from '@/components/view/filePickerMBZ'
 import DownloadMBZButton from '@/components/view/downloadMBZButton'
 
@@ -19,15 +19,15 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div>
-          <CalModel>
-            <CalController>
+          <EventModel>
+            <EventController>
               <EventCalendar />
               <CourseInformationForm />
               <ClearCalButton />
               <FilePickerMBZ />
               <DownloadMBZButton />
-            </CalController>
-          </CalModel>
+            </EventController>
+          </EventModel>
         </div>
       </main>
     </>

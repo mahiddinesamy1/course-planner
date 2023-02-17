@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
-import {CalControllerContext} from "@/components/controller/calController";
+import {EventControllerContext} from "@/components/controller/eventController";
 
 interface Props {}
 
 const FilePickerMBZ: React.FC<Props> = () => {
   const [selectedFile, setSelectedFile] = useState<string>("");
 
-  const {notifyMBZSubmited} = useContext(CalControllerContext);
+  const {notifyMBZSubmited} = useContext(EventControllerContext);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFile(event.target.value);

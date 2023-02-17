@@ -1,9 +1,9 @@
 import React, {useContext, useState} from "react";
-import {CalControllerContext} from "@/components/controller/calController";
+import {EventControllerContext} from "@/components/controller/eventController";
 
 const DownloadMBZButton: React.FC<{}> = () => {
     const [downloadLink, setDownloadLink] = useState<string>("");
-    const {notifyMBZDownload} = useContext(CalControllerContext);
+    const {notifyMBZDownload} = useContext(EventControllerContext);
 
     const handleOnClick = () => {
         const downloadURL = notifyMBZDownload(downloadLink);

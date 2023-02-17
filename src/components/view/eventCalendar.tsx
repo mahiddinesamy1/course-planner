@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { CalModelContext } from '@/components/model/calModel';
-import {findEarliestEventDate} from '../controller/util/calEventOperations'
+import { EventModelContext } from '@/components/model/eventModel';
+import {findEarliestEventDate} from '../controller/util/eventOperations'
 
 const EventCalendar: React.FC = () => {
-    const {events} = useContext(CalModelContext);
+    const {events} = useContext(EventModelContext);
     const [selectedDate, setSelectedDate] = useState<Date>(findEarliestEventDate(events));
 
     
