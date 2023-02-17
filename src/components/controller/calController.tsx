@@ -1,10 +1,10 @@
 import React, {useState, useContext, createContext} from 'react';
-import {CalEvent} from '@/components/model/calEvent'
+import {CalEvent} from '@/components/model/interfaces/events/calEvent'
 import fetchCourseICAL from './util/fetchCourseICAL'
 import {mapICALtoEvent} from './util/calEventOperations';
 import { CalModelContext } from '@/components/model/calModel';
 import { extractData, parseActivities, zipData } from './util/mbzInterpreter';
-import { ArchiveFile } from '../model/archiveFile';
+import { ArchiveFile } from '@/components/model/interfaces/archiveFile';
 
 type CalControllerContextProps = {
     notifyCourseFormSubmit : (code: string, group: number, year: number, semester:number) => void;

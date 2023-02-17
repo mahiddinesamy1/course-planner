@@ -1,4 +1,4 @@
-import {CalEvent} from './calEvent'
+import {CalEvent} from './interfaces/events/calEvent'
 import React, {useState, createContext, useEffect, useRef} from 'react'
 import {getValue, setValue} from './localStore';
 

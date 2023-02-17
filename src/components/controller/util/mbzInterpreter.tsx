@@ -1,8 +1,9 @@
 import {decompressSync, Zippable, zipSync} from 'fflate';
 // @ts-ignore
 import XMLParser from 'fast-xml-parser';
-import { CalEvent, CalEventType } from '@/components/model/calEvent';
-import { ArchiveFile } from '@/components/model/archiveFile';
+import { CalEvent, CalEventType } from '@/components/model/interfaces/events/calEvent';
+import { ArchiveFile } from '@/components/model/interfaces/archiveFile';
+import { MBZEvent } from '@/components/model/interfaces/events/mbzEvent';
 
 
 
@@ -10,23 +11,25 @@ function mbzDateToJS(mbzDate : string): Date{
     return new Date(parseInt(mbzDate, 10) * 1000);
 }
 
-function parseMBZQuiz(obj:any, id:string): CalEvent {
+function parseMBZQuiz(obj:any, id:string, path:string): MBZEvent {
     return {start: mbzDateToJS(obj["timeopen"]),
             end: mbzDateToJS(obj["timeclose"]),
             title: obj["name"],
             type: CalEventType.Evaluation,
-            uid: id};
+            uid: id,
+            path: path};
 }
 
-function parseMBZHomework(obj:any, id:string): CalEvent {
+function parseMBZHomework(obj:any, id:string, path:string): MBZEvent {
     return {start: mbzDateToJS(obj["allowsubmissionsfromdate"]),
             end: mbzDateToJS(obj["duedate"]),
             title: obj["name"],
             type: CalEventType.Homework,
-            uid: id};
+            uid: id,
+            path: path};
 }
 
-const mbzActivtiyToCal: {[key: string]: (obj:any, id:string)=>CalEvent } = {
+const mbzActivtiyToCal: {[key: string]: (obj:any, id:string, path:string)=>MBZEvent } = {
     "quiz": parseMBZQuiz,
     "assign": parseMBZHomework
 };
@@ -75,10 +78,11 @@ export const parseActivities = async (data:{[key:string]:ArchiveFile}):Promise<C
         for (let activityPath of activityPaths) {
             let activityFile = data[activityPath];
             let activtiyAsJSON = xmlParser.parse(Buffer.from(activityFile.buffer))["activity"]
+            activityFile.parsedData = activtiyAsJSON;
             let type = activtiyAsJSON["@_modulename"];
             let id = activtiyAsJSON["@_id"];
             let mappingFcn = mbzActivtiyToCal[type];
-            calEvents.push(mappingFcn(activtiyAsJSON[type], id));
+            calEvents.push(mappingFcn(activtiyAsJSON[type], id, activityPath));
         }
         
         return calEvents;

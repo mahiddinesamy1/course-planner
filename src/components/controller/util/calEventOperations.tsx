@@ -1,4 +1,4 @@
-import {CalEvent, CalEventType} from '@/components/model/calEvent'
+import {CalEvent, CalEventType} from '@/components/model/interfaces/events/calEvent'
 const ical = require('ical.js');
 
 export const mapICALtoEvent = (icalData: string):CalEvent[] => {
@@ -9,9 +9,7 @@ export const mapICALtoEvent = (icalData: string):CalEvent[] => {
             start: vEvent.getFirstPropertyValue('dtstart').toJSDate(),
             end: vEvent.getFirstPropertyValue('dtend').toJSDate(),
             title: vEvent.getFirstPropertyValue('summary').trim(),
-            description: vEvent.getFirstPropertyValue('description').trim(),
             type: iCalCategoryToType(vEvent.getFirstPropertyValue('categories').trim()),
-            location: vEvent.getFirstPropertyValue('location').trim(),
             uid: vEvent.getFirstPropertyValue('uid').trim()
         }
     }).filter((event:CalEvent) => {return event.type != undefined});

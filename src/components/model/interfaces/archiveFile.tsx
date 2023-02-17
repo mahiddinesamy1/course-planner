@@ -7,5 +7,6 @@ export interface ArchiveFile {
     uid: number,
     ustarFromat: string,
     version : string,
-    checksum : number
+    checksum : number,
+    parsedData? : any
 }
