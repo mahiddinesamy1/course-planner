@@ -5,7 +5,8 @@ import CourseInformationForm from '@/components/view/courseInformationForm'
 import {CalController} from '@/components/controller/calController'
 import ClearCalButton from '@/components/view/clearCalButton'
 import {CalModel} from '@/components/model/calModel'
-import FilePicker from '@/components/view/filePicker'
+import FilePickerMBZ from '@/components/view/filePickerMBZ'
+import DownloadMBZButton from '@/components/view/downloadMBZButton'
 
 export default function Home() {
   return (
@@ -23,7 +24,8 @@ export default function Home() {
               <EventCalendar />
               <CourseInformationForm />
               <ClearCalButton />
-              <FilePicker />
+              <FilePickerMBZ />
+              <DownloadMBZButton />
             </CalController>
           </CalModel>
         </div>

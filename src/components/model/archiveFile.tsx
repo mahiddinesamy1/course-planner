@@ -1,5 +1,6 @@
 export interface ArchiveFile {
     buffer : ArrayBuffer,
+    blob : Blob,
     type : string,
     name : string,
     namePrefix : string,

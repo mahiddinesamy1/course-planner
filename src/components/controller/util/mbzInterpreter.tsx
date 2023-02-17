@@ -1,4 +1,4 @@
-import {decompressSync} from 'fflate';
+import {decompressSync, Zippable, zipSync} from 'fflate';
 // @ts-ignore
 import XMLParser from 'fast-xml-parser';
 import { CalEvent, CalEventType } from '@/components/model/calEvent';
@@ -39,6 +39,18 @@ const mbzActivtiyToCal: {[key: string]: (obj:any, id:string)=>CalEvent } = {
     "quiz": parseMBZQuiz,
     "assign": parseMBZHomework
 };
+
+export const zipData = (data:ArchiveFile[]): Uint8Array => {
+
+  const pathToData: Zippable = {};
+  for (let file of data) {
+    pathToData[file.name] = new Uint8Array(file.buffer);
+  }
+
+  const serialized = zipSync(pathToData);
+
+  return serialized;
+}
 
 export const extractData = async (file:File): Promise<ArchiveFile[]> => {
 

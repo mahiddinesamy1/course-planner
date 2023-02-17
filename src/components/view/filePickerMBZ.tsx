@@ -3,7 +3,7 @@ import {CalControllerContext} from "@/components/controller/calController";
 
 interface Props {}
 
-const FilePicker: React.FC<Props> = () => {
+const FilePickerMBZ: React.FC<Props> = () => {
   const [selectedFile, setSelectedFile] = useState<string>("");
 
   const {notifyFileSubmited} = useContext(CalControllerContext);
@@ -22,4 +22,4 @@ const FilePicker: React.FC<Props> = () => {
   );
 };
 
-export default FilePicker;
+export default FilePickerMBZ;
