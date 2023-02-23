@@ -1,10 +1,10 @@
 import React, {useState, useContext, createContext} from 'react';
-import {CalEvent} from '@/components/model/interfaces/events/calEvent'
-import fetchCourseICAL from './util/fetchCourseICAL'
-import {addUniqueEvents, mapICALtoEvent} from './util/eventOperations';
+import fetchCourseICAL from './util/fetchOperations'
+import {parseICALEvents} from './util/icalInterpreter';
 import { EventModelContext } from '@/components/model/eventModel';
 import { extractData, parseActivities, zipData } from './util/mbzInterpreter';
 import { ArchiveFile } from '@/components/model/interfaces/archiveFile';
+import { addUniqueEvents } from './util/eventsOperations';
 
 type EventControllerContextProps = {
     notifyCourseFormSubmit : (code: string, group: number, year: number, semester:number) => void;
@@ -26,7 +26,7 @@ export const EventController: React.FC<CalControllerProps> = ({children}) => {
     
     const notifyCourseFormSubmit = async (code: string, group: number, year: number, semester:number) => {
         const textData = await fetchCourseICAL(code, group, year, semester);
-        const newEvents = mapICALtoEvent(textData);
+        const newEvents = parseICALEvents(textData);
         addUniqueEvents(newEvents, courseEvents);
         setCourseEvents({...courseEvents});
     }

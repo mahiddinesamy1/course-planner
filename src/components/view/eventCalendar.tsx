@@ -3,7 +3,8 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { EventModelContext } from '@/components/model/eventModel';
-import {findEarliestEventDate} from '../controller/util/eventOperations'
+import { findEarliestEventDate } from '@/components/controller/util/eventsOperations';
+
 
 const EventCalendar: React.FC = () => {
     const {events} = useContext(EventModelContext);
