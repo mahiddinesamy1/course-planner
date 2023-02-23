@@ -1,75 +1,58 @@
 import {describe, expect, test} from '@jest/globals';
-import * as fs from 'fs';
-import path from 'path';
-import {parseICALEvents} from '@/components/controller/util/icalInterpreter'
 import { CalEvent, CalEventType } from '@/components/model/interfaces/events/calEvent';
-const ical = require('ical');
-const dataPath = "__tests__/data/ical";
+import { addUniqueEvents, findEarliestEventDate } from '@/components/controller/util/eventsOperations';
+import { EventDict } from '@/components/model/eventModel';
 
-const icalToEventField: {[key: string]: string} = {
-  "start": "start",
-  "end": "end",
-  "uid": "uid",
-  "summary": "title"
+const startDate = new Date();
+const endDate = createDateWithOffset(startDate, 10);
+const basicEvent:CalEvent = {
+  start: startDate,
+  end: endDate,
+  title:"title",
+  uid:"uid",
+  type: CalEventType.Evaluation
+};
+
+function createDateWithOffset(date:Date, offest:number) {
+  return new Date(date.getTime() + offest);
 }
 
-async function getFileContent(filename:string):Promise<string> {
-  const data = await fs.promises.readFile(path.join(dataPath, filename));
-  return data.toString();
+function shuffleArray(array:any) {
+  return array.sort(() => Math.random() - 0.5);
 }
 
-function parseIcal(icalData:string): any {
-  return ical.parseICS(icalData);
-}
 
-function eventEqualExpected(expectedResult: any, toTest: CalEvent):boolean {
-  let isEqual = true;
-  for (let expectedField in icalToEventField) {
-    // @ts-ignore
-    isEqual = isEqual && JSON.stringify(toTest[icalToEventField[expectedField]]) === JSON.stringify(expectedResult[expectedField]);
-
+describe('CalEvent operations', () => {
+  test('Finds the earliest event', () => {
+    const events: CalEvent[] = [];
+    let expectedEarliest;
+    for (let i=0; i<10; i++) {
+      events.push({...basicEvent});
+      events[i].start = createDateWithOffset(events[i].start, i*1000);
+      events[i].end = createDateWithOffset(events[i].end, i*1000);
+      if (i==0) {
+        expectedEarliest = events[i].start;
+      }
     }
+    const earliest = findEarliestEventDate(shuffleArray(events));
+    expect(earliest).toBe(expectedEarliest);
+  });
 
-  return isEqual;
-}
+  test('Should only add events with unique uid', () => {
+    const addedEvents:EventDict = {};
+    const events: CalEvent[] = [];
+    const nbEvents = 10;
+    for (let i=0; i<nbEvents; i++) {
+      events.push({...basicEvent});
+      events[i].uid = ""+i;
+    }
+    addUniqueEvents(events,addedEvents); // add unique events
 
-function generateUUID() {
-  let uuid = '';
-  for (let i = 0; i < 32; i++) {
-    const randomDigit = Math.floor(Math.random() * 16);
-    uuid += randomDigit.toString(16);
-  }
-  return uuid;
-}
+    expect(Object.keys(addedEvents).length).toBe(nbEvents); // all unique events added
 
-describe('ICAL module', () => {
-  let icsData: string;
-  let icalEvents: any;
-  beforeEach(async () => {
-    icsData = await getFileContent("valid.ics");
-    icalEvents = parseIcal(icsData);
+    addUniqueEvents(events,addedEvents); // add non-unique events
+
+    expect(Object.keys(addedEvents).length).toBe(nbEvents); // no new events added
+
   })
-
-  test('ICAL property are translated to CalEvents', async () => {
-    const icsData = await getFileContent("valid.ics");
-    const parsedEvents = parseICALEvents(icsData);
-
-    for (let parsedEvent of parsedEvents) {
-      expect(parsedEvent.uid in icalEvents).toBeTruthy();
-      expect(eventEqualExpected(icalEvents[parsedEvent.uid], parsedEvent)).toBeTruthy();
-    }
-  });
-  test('Parser does not create events with unsupported types', async () => {
-    const typeAttribute = "CATEGORIES:";
-    const bogusTypeAttribute = typeAttribute + generateUUID();
-    const eventNb = Object.keys(icalEvents).length;
-    const bogusNb = Math.floor(eventNb / 2);
-    let count =0;
-    const dataWithBogusTypes = icsData.replace(new RegExp(typeAttribute+".*", "g"), (match, _) => {
-      count++;
-      return count <= bogusNb ? bogusTypeAttribute : match;
-    });
-    icalEvents = parseICALEvents(dataWithBogusTypes);
-    expect(icalEvents.length).toBe(eventNb - bogusNb);
-  });
 });
