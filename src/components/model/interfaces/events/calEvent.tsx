@@ -6,6 +6,7 @@ export interface CalEvent {
     uid: string;
 }
 
+
 export enum CalEventType {
     Seminar,
     Laboratories,
