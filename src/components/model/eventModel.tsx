@@ -2,6 +2,7 @@ import {CalEvent} from './interfaces/events/calEvent'
 import React, {useState, createContext, useEffect, useRef} from 'react'
 import {getValue, setValue} from './localStore';
 import { MBZEvent } from './interfaces/events/mbzEvent';
+import { updateEventDates } from '../controller/util/updateEventDates';
 
 type EventModelContextProps = {
     events: CalEvent[],
@@ -10,9 +11,11 @@ type EventModelContextProps = {
     setCourseEvents: React.Dispatch<React.SetStateAction<EventDict>>,
     MBZEvents: MBZEventDict,
     setMBZEvents: React.Dispatch<React.SetStateAction<MBZEventDict>>;
-}
+  }
+
 
 export const EventModelContext = createContext<EventModelContextProps>({} as EventModelContextProps);
+
 
 type CalModelProps = {
     children: React.ReactNode;
@@ -22,14 +25,23 @@ const LOCAL_STORE_COURSE_KEY = 'course_events';
 const LOCAL_STORE_MBZ_KEY = 'mbz_events';
 
 export type EventDict = {[key:string]: CalEvent};
-export type MBZEventDict = {[key:string]: MBZEvent};
+export type MBZEventDict = {[key: string]: MBZEvent;}
+
+
 
 export const EventModel: React.FC<CalModelProps> = ({children}) => {
     // creates a dummy objects because of SSR and client-server HTML dif exception
     const [events, setEvents] = useState<CalEvent[]>([]); 
+   
     const [courseEvents, setCourseEvents] = useState<EventDict>({}); 
     const [MBZEvents, setMBZEvents] = useState<MBZEventDict>({}); 
 
+    const [newStartDate, setNewStartDate] = useState<Date>(new Date());
+    const [newEndDate, setNewEndDate] = useState<Date>(new Date());
+    //const updatedCourseEvents = updateEventDates(newStartDate, newEndDate, MBZEvents, Object.values(MBZEvents)[0].uid);
+    //const updatedCourseEvents = updateEventDates(newStartDate, newEndDate,MBZEvents,MBZEvents[0].uid); // je ne sais pas quoi mettre pour linstant
+   
+   
     const isFirstRender = useRef<boolean>(true);
 
     useEffect(()=>{
@@ -40,6 +52,10 @@ export const EventModel: React.FC<CalModelProps> = ({children}) => {
         } else { // updates local storage once true data changes
             setValue(LOCAL_STORE_COURSE_KEY, courseEvents);
             setValue(LOCAL_STORE_MBZ_KEY, MBZEvents);
+            const updatedCourseEvents =  MBZEvents ;
+            //if(updatedCourseEvents){
+              //  setValue(LOCAL_STORE_MBZ_KEY,updatedCourseEvents);
+            //}
         }
         setEvents([...Object.values(courseEvents),...Object.values(MBZEvents)]);
     }, [courseEvents, MBZEvents]);

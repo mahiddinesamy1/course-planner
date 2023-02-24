@@ -31,6 +31,7 @@ export const addUniqueEvents = (events: CalEvent[], addToCollection: EventDict):
     }
 }
 
+
 function iCalCategoryToType(icalCategory: string): CalEventType|undefined {
     let type: CalEventType|undefined;
     switch (icalCategory) {
