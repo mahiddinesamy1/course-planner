@@ -33,6 +33,7 @@
     "ical": "^0.8.0",
     "jest": "^29.4.3",
     "jest-environment-jsdom": "^29.4.3",
+    "tar": "^6.1.13",
     "ts-node": "^10.9.1"
   }
 }

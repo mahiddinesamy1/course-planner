@@ -4,7 +4,7 @@ import path from 'path';
 import {parseICALEvents} from '@/components/controller/util/icalInterpreter'
 import { CalEvent, CalEventType } from '@/components/model/interfaces/events/calEvent';
 const ical = require('ical');
-const dataPath = "__tests__/data/ical";
+const dataPath = "__tests__/data";
 
 const icalToEventField: {[key: string]: string} = {
   "start": "start",

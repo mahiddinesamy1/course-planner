@@ -8,7 +8,7 @@ import { MBZEvent } from '@/components/model/interfaces/events/mbzEvent';
 
 
 function mbzDateToJS(mbzDate : string): Date{
-    return new Date(parseInt(mbzDate, 10) * 1000);
+    return new Date(parseInt(mbzDate, 10)* 1000);
 }
 
 function parseMBZQuiz(obj:any, id:string, path:string): MBZEvent {
@@ -71,8 +71,8 @@ const options = {
 };
 const xmlParser = new XMLParser.XMLParser(options);
 
-export const parseActivities = async (data:{[key:string]:ArchiveFile}):Promise<CalEvent[]> => {
-        const calEvents:CalEvent[] = [];
+export const parseActivities = async (data:{[key:string]:ArchiveFile}):Promise<MBZEvent[]> => {
+        const calEvents:MBZEvent[] = [];
         const activityPaths: string[] = getActivtyPaths(data);
         
         for (let activityPath of activityPaths) {

@@ -35,7 +35,7 @@ function iCalCategoryToType(icalCategory: string): CalEventType|undefined {
             break;
         }
         default: { 
-            console.log("Type ", icalCategory, " unsupported")
+           // console.log("Type ", icalCategory, " unsupported")
             break; 
          } 
     }
